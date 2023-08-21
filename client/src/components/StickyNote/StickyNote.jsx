@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 
-function StickyNote({ color, width, height, id }) {
+function StickyNote({ bgColor, width, height, id }) {
 
     const style = {
-        backgroundColor: color,
+        backgroundColor: bgColor,
     };
 
     const [stickInfo, setStickyInfo] = useState('');
@@ -17,7 +17,7 @@ function StickyNote({ color, width, height, id }) {
             }}
             style={style}
             spellCheck="false"
-            className={`${width} ${height} bg-${color} border-none rounded-lg px-2`}
+            className={`${width} ${height} border-none rounded-lg px-2`}
             id={id}
         />
     )
