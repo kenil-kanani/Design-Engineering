@@ -4,5 +4,8 @@ import SignUp from './SignUp/SignUp';
 import Contact from './Contact/Contact';
 import Verify from './Verify/Verify';
 import MyProfile from "./MyProfile/MyProfile";
+import MyProjects from './MyProjects/MyProjects';
+import Project from './Project/Project';
+import AEIOU from './AEIOU/AEIOU';
 
-export { Home, Login, SignUp, Contact, Verify, MyProfile };
+export { Home, Login, SignUp, Contact, Verify, MyProfile, MyProjects, Project, AEIOU };

@@ -8,7 +8,75 @@ const initialState = [
         canvases: {
             aeiou: {
                 environment: {
+                    stickyCount: 1,
+                    stickyColor: '#00DFA2',
+                    data: ["a", "e", "i", "o", "u"]
+                },
+                interaction: {
+                    stickyCount: 5,
+                    stickyColor: '#F6FA70',
+                    data: ["a", "e", "i", "o", "u"]
+                },
+                objects: {
+                    stickyCount: 5,
+                    stickyColor: '#FBB454',
+                    data: ["a", "e", "i", "o", "u"]
+                },
+                activity: {
+                    stickyCount: 5,
+                    stickyColor: '#79E0EE',
+                    data: ["a", "e", "i", "o", "u"]
+                },
+                users: {
+                    stickyCount: 5,
+                    stickyColor: '#98EECC',
+                    data: ["a", "e", "i", "o", "u"]
+                }
+            }
+        }
+    },
+    {
+        _id: '2',
+        owner_id: '1',
+        project_name: 'Project 1',
+        canvases: {
+            aeiou: {
+                environment: {
                     stickyCount: 2,
+                    stickyColor: '#00DFA2',
+                    data: ["a", "e", "i", "o", "u"]
+                },
+                interaction: {
+                    stickyCount: 5,
+                    stickyColor: '#F6FA70',
+                    data: ["a", "e", "i", "o", "u"]
+                },
+                objects: {
+                    stickyCount: 5,
+                    stickyColor: '#FBB454',
+                    data: ["a", "e", "i", "o", "u"]
+                },
+                activity: {
+                    stickyCount: 5,
+                    stickyColor: '#79E0EE',
+                    data: ["a", "e", "i", "o", "u"]
+                },
+                users: {
+                    stickyCount: 5,
+                    stickyColor: '#98EECC',
+                    data: ["a", "e", "i", "o", "u"]
+                }
+            }
+        }
+    },
+    {
+        _id: '3',
+        owner_id: '1',
+        project_name: 'Project 1',
+        canvases: {
+            aeiou: {
+                environment: {
+                    stickyCount: 3,
                     stickyColor: '#00DFA2',
                     data: ["a", "e", "i", "o", "u"]
                 },

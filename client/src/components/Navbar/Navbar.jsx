@@ -6,7 +6,7 @@ import { AuthContext } from '../../context/AuthContext';
 import { VscAccount } from "react-icons/vsc";
 import { useClickAway } from 'react-use';
 import { Typography } from "@material-ui/core";
-import { AiOutlineClose } from "react-icons/ai";
+import { AiOutlineClose, AiFillPropertySafety } from "react-icons/ai";
 import { ImProfile } from "react-icons/im";
 import { BiLogIn } from "react-icons/bi";
 
@@ -57,7 +57,7 @@ export const Navbar = () => {
                         <VscAccount />
                     </span>
                     {(
-                        <div ref={magicDivRef} className=" magic-div w-[300px] h-screen bg-amber-300 fixed"
+                        <div ref={magicDivRef} className=" magic-div w-[300px] h-screen bg-amber-300 fixed z-10"
                             style={{
                                 width: isDropdownOpen ? "300px" : "0",
                                 height: "100%",
@@ -82,6 +82,10 @@ export const Navbar = () => {
                                         <div>Log Out</div>
                                     </LinkTag>
                                 </div>
+                                <LinkTag to={'/myprojects'}>
+                                    <AiFillPropertySafety className="text-2xl" />
+                                    <div>My Project</div>
+                                </LinkTag>
                             </div>
                         </div>
                     )}
