@@ -12,6 +12,13 @@ function StickyDiv({ width, height, canvasId, divId, divName, projectId }) {
     const projects = useSelector(state => state.projectsReducer);
     const dispatch = useDispatch();
 
+    if (!projects) {
+        return (
+            <>
+                Refresh Plz
+            </>
+        )
+    }
 
     let oneProject = {};
     for (let i = 0; i < projects.length; i++) {
@@ -22,14 +29,13 @@ function StickyDiv({ width, height, canvasId, divId, divName, projectId }) {
     const [project, setProject] = useState(oneProject);
 
 
-    const [stickyCount, setStickyCount] = useState(project.canvases[canvasId][divId].stickyCount);
-    const [bgColor, setBgColor] = useState(project.canvases[canvasId][divId].stickyColor);
+    const [stickyCount, setStickyCount] = useState(project?.canvases?.[canvasId]?.[divId]?.stickyCount || 0);
+    const [bgColor, setBgColor] = useState(project?.canvases?.[canvasId]?.[divId]?.stickyColor || '#ffffff');
 
     const [newStickyCountandColor, setNewStickyCountandColor] = useState({
         newStickyCount: stickyCount,
         newBgColor: bgColor,
     });
-
 
     let submitButtonHandler = () => {
 
@@ -56,7 +62,7 @@ function StickyDiv({ width, height, canvasId, divId, divName, projectId }) {
 
     let arr = [];
     for (let index = 0; index < stickyCount; index++) {
-        arr.push(<StickyNote key={index} id={index} bgColor={bgColor} width={width} height={height}></StickyNote>)
+        arr.push(<StickyNote key={index} stickyNoteIndex={index} bgColor={bgColor} width={width} height={height} projectId={projectId} canvasId={canvasId} divId={divId}></StickyNote>)
     }
 
     return (

@@ -6,7 +6,6 @@ function ProjectCard({ projectId, title, description }) {
     const navigate = useNavigate();
 
     const handleClick = () => {
-        console.log(title)
         const formattedTitle = title.toLowerCase().replace(/\s+/g, '-');
         navigate(`/myprojects/${formattedTitle}`, { state: { projectId, title, formattedTitle } });
     };
@@ -15,10 +14,7 @@ function ProjectCard({ projectId, title, description }) {
         <div className="cardd" id={projectId} onClick={handleClick}>
             <p className="cardtitle">{title}</p>
             <p className="small-desc">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat
-                veritatis nobis saepe itaque rerum nostrum aliquid obcaecati odio
-                officia deleniti. Expedita iste et illum, quaerat pariatur consequatur
-                eum nihil itaque!
+                {description}
             </p>
             <div className="go-corner">
                 <div className="go-arrow">→</div>

@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import authReducer from '../features/auth/authSlice'
-import projectsReducer from '../features/projects/projectsSlice'
+import projectsReducer, { fetchInitialProjects } from '../features/projects/projectsSlice'
 import thunkMiddleware from 'redux-thunk';
 
 export const store = configureStore({
@@ -8,5 +8,8 @@ export const store = configureStore({
         authReducer,
         projectsReducer
     },
-    middleware: [thunkMiddleware]
+    middleware: [thunkMiddleware],
+
 })
+
+store.dispatch(fetchInitialProjects());

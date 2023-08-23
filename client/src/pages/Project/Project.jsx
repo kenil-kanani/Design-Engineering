@@ -8,6 +8,8 @@ function Project() {
     const title = state.title;
     const formattedTitle = state.formattedTitle;
 
+    console.log(projectId)
+
     return (
         <div className='w-screen h-screen flex justify-center flex-wrap'>
             {/* <p>Project ID: {projectId}</p> */}

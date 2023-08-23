@@ -1,4 +1,5 @@
 module.exports = {
     UserService: require('./user-service'),
-    ProfileService: require('./profile-service')
+    ProfileService: require('./profile-service'),
+    ProjectService: require('./project-service'),
 }

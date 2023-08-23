@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const {authenticateJwt} = require('../../middlewares/auth')
+const { authenticateJwt } = require('../../middlewares/auth')
 
-const { UserController, ProfileController } = require('../../controllers/index')
+const { UserController, ProfileController, ProjectController } = require('../../controllers/index')
 
 router.post(
     '/signup',
@@ -44,8 +44,20 @@ router.get(
     UserController.isActivated
 )
 
+router.post(
+    '/createproject',
+    authenticateJwt,
+    ProjectController.createProject
+)
+
 router.get(
-    '/me' ,
+    '/getprojects',
+    authenticateJwt,
+    ProjectController.getProjects
+)
+
+router.get(
+    '/me',
     authenticateJwt,
     UserController.me
 )

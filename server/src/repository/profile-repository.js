@@ -20,7 +20,7 @@ class ProfileRepository {
 
     async updateProfile(userId, updateProfileData) {
         try {
-            const updatedProfile = ProfileModel.updateOne({ user_id: userId }, updateProfileData);
+            const updatedProfile = ProfileModel.updateOne({ owner_id: userId }, updateProfileData);
             console.log(updatedProfile);
             console.log(updateProfileData);
             return updatedProfile;
@@ -29,6 +29,20 @@ class ProfileRepository {
                 'RepositoryError',
                 'Not able to update Profile',
                 'Something went wrong with updating user profile , come back again',
+                StatusCodes.INTERNAL_SERVER_ERROR
+            )
+        }
+    }
+
+    async getProfile(userId) {
+        try {
+            const profile = await ProfileModel.findOne({ owner_id: userId });
+            return profile;
+        } catch (error) {
+            throw new AppError(
+                'RepositoryError',
+                'Not able to get Profile',
+                'Something went wrong with getting user profile , come back again',
                 StatusCodes.INTERNAL_SERVER_ERROR
             )
         }

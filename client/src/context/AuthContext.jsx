@@ -1,6 +1,6 @@
 import React, { createContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { signInApi, signUpApi , me } from '../apis/index';
+import { signInApi, signUpApi, me } from '../apis/index';
 import { toast } from "react-toastify";
 export const AuthContext = createContext();
 
@@ -8,13 +8,14 @@ export const AuthProvider = ({ children }) => {
 
     const navigate = useNavigate();
 
-    const [user , setUser] = useState({
-        name : "",
-        email : ""
+    const [user, setUser] = useState({
+        name: "",
+        email: ""
     })
 
     const [isAuthenticated, setIsAuthenticated] = useState();
 
+    const [isFetched, setIsFetched] = useState(false);
 
     const login = async (email, password) => {
 
@@ -56,9 +57,9 @@ export const AuthProvider = ({ children }) => {
     const isValid = async () => {
         try {
             const response = await me();
-            if(response != null){
-                if(response.status){
-                    setUser({email : response.email , name : response.name});
+            if (response != null) {
+                if (response.status) {
+                    setUser({ email: response.email, name: response.name });
                     setIsAuthenticated(true);
                     return true;
                 }
@@ -68,12 +69,12 @@ export const AuthProvider = ({ children }) => {
                     return false;
                 }
             }
-            else{
+            else {
                 setIsAuthenticated(false);
                 return false;
             }
         }
-        catch (err){
+        catch (err) {
             isAuthenticated(false);
             return false;
         }
@@ -91,7 +92,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     return (
-        <AuthContext.Provider value={{ setIsAuthenticated, isValid, isAuthenticated, login, signup, logout , user }}>
+        <AuthContext.Provider value={{ setIsAuthenticated, isValid, isAuthenticated, login, signup, logout, user, isFetched, setIsFetched }}>
             {children}
         </AuthContext.Provider>
     );
