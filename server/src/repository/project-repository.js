@@ -9,6 +9,7 @@ class ProjectRepository {
             await project.save();
             return project;
         } catch (error) {
+            console.log(error)
             throw new AppError(
                 'RepositoryError',
                 'Not able to crete Project',

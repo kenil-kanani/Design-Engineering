@@ -9,7 +9,6 @@ const canvasDivisionSchema = new mongoose.Schema({
 
 // Define a schema for the Project
 const projectSchema = new mongoose.Schema({
-    _id: String,
     owner_id: String,
     project_name: String,
     project_description: String,

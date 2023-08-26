@@ -3,16 +3,26 @@ import { ProjectCard } from '../../components/index';
 import { useSelector, useDispatch } from 'react-redux'
 import { BsPatchPlusFill } from 'react-icons/bs';
 import { AiFillCloseCircle } from 'react-icons/ai';
+import { createNewProject } from '../../features/projects/projectsSlice';
 
 function MyProjects() {
 
     const [isProjectFormVisible, setIsProjectFormVisible] = React.useState(false);
 
+
+
     function AddProjectForm() {
+
+        const [projectName, setProjectName] = React.useState('');
+        const [projectDescription, setProjectDescription] = React.useState('');
+
+        const dispatch = useDispatch();
+
+
         return (
             <>
                 <form className='form relative'>
-                    <div className='absolute top-2 right-2 text-2xl cursor-pointer text-red-500'  onClick={()=>{setIsProjectFormVisible(false)}}>
+                    <div className='absolute top-2 right-2 text-2xl cursor-pointer text-red-500' onClick={() => { setIsProjectFormVisible(false) }}>
                         <AiFillCloseCircle />
                     </div>
                     <div className='flex-column'>
@@ -23,6 +33,10 @@ function MyProjects() {
                             placeholder='Title Of The Project'
                             className='input'
                             type='text'
+                            value={projectName}
+                            onChange={(event) => {
+                                setProjectName(event.target.value);
+                            }}
                         />
                     </div>
                     <div className='flex-column'>
@@ -34,6 +48,10 @@ function MyProjects() {
                         cols="30"
                         rows="4"
                         type='text'
+                        value={projectDescription}
+                        onChange={(event) => {
+                            setProjectDescription(event.target.value);
+                        }}
                         placeholder='Description Of The Project'
                         className='p-2'
                         style={{ border: "1.5px solid #ecedec" }}>
@@ -41,14 +59,14 @@ function MyProjects() {
 
                     <button className='button-submit' onClick={(event) => {
                         event.preventDefault();
-
+                        setIsProjectFormVisible(false);
+                        dispatch(createNewProject({ projectName, projectDescription }));
                     }}>Create Project</button>
                 </form >
             </>
         )
     }
 
-    const dispatch = useDispatch();
     const isLoading = useSelector(state => state.projectsReducer.isLoading);
     const projects = useSelector(state => state.projectsReducer.projects);
 
