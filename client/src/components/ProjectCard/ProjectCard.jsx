@@ -7,7 +7,8 @@ function ProjectCard({ projectId, title, description }) {
 
     const handleClick = () => {
         const formattedTitle = title.toLowerCase().replace(/\s+/g, '-');
-        navigate(`/myprojects/${formattedTitle}`, { state: { projectId, title, formattedTitle } });
+        const encodedProjectId = encodeURIComponent(projectId);
+        navigate(`/myprojects/${formattedTitle}?id=${encodedProjectId}`, { state: { title, formattedTitle } });
     };
 
     return (

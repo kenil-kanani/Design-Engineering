@@ -10,34 +10,39 @@ function Project() {
     const dispatch = useDispatch();
     const isLoading = useSelector(state => state.projectsReducer.isLoading);
 
-    useEffect(() => {
-        dispatch(fetchInitialProjects());
-    }, [dispatch]);
-
     if (isLoading) {
         console.log("Rendering loading screen...");
         return <div className='flex w-screen h-screen justify-center items-center'>
             Loading....
         </div>;
     }
-    
-    const { state } = useLocation();
-    const projectId = state.projectId;
-    const title = state.title;
-    const formattedTitle = state.formattedTitle;
 
+    const projects = useSelector(state => state.projectsReducer.projects);
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const projectId = searchParams.get('id');
+    const formattedTitle = searchParams.get('formattedTitle');
+
+
+    const project = projects.find(p => p._id === projectId);
 
 
     return (
-        <div className='w-screen h-screen flex justify-center flex-wrap'>
-            {/* <p>Project ID: {projectId}</p> */}
-            <CanvasCard title={title} projectId={projectId} canvasName={"AEIOU"} formattedTitle={formattedTitle} />
-            <CanvasCard title={title} projectId={projectId} canvasName={"Empathy"} />
-            <CanvasCard title={title} projectId={projectId} canvasName={"Ideation"} />
-            <CanvasCard title={title} projectId={projectId} canvasName={"Product Development"} />
-            <CanvasCard title={title} projectId={projectId} canvasName={"Business Model"} />
-            <CanvasCard title={title} projectId={projectId} canvasName={"LNM"} />
-        </div>
+        !isLoading && !project ? (
+            <div>
+                <h2>Project Not Found</h2>
+                <p>The requested project does not exist.</p>
+            </div>
+        ) : (
+            <div className='w-screen h-screen flex justify-center flex-wrap'>
+                <CanvasCard projectId={projectId} canvasName={"AEIOU"} />
+                <CanvasCard projectId={projectId} canvasName={"Empathy"} />
+                <CanvasCard projectId={projectId} canvasName={"Ideation"} />
+                <CanvasCard projectId={projectId} canvasName={"Product Development"} />
+                <CanvasCard projectId={projectId} canvasName={"Business Model"} />
+                <CanvasCard projectId={projectId} canvasName={"LNM"} />
+            </div>
+        )
     )
 }
 

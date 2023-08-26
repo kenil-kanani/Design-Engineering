@@ -24,7 +24,7 @@ function StickyNote({ bgColor, width, height, projectId, canvasId, divId, sticky
                 stickyNoteIndex,
                 newData: tempStickyInfo,
             }));
-        }, 2000); // Adjust the debounce time interval as needed (in milliseconds)
+        }, 1000); // Adjust the debounce time interval as needed (in milliseconds)
 
         return () => {
             clearTimeout(debounceTimeout);

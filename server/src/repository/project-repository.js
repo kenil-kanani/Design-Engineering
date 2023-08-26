@@ -1,5 +1,6 @@
 const { StatusCodes } = require('http-status-codes');
 const ProjectModel = require('../models/project');
+const { AppError } = require('../utils/errors/index');
 
 class ProjectRepository {
     async createProject(projectData) {

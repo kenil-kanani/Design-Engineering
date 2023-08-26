@@ -24,7 +24,7 @@ const createProject = async (req, res) => {
 
 const updateProject = async (req, res) => {
     try {
-        const response = await projectService.updateProject(req.body.projectDetail);
+        const response = await projectService.updateProject(req.body);
         return res.status(201).json({
             success: true,
             message: 'Successfully updated a project',

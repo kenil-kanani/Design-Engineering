@@ -15,7 +15,7 @@ class ProjectService {
         }
     }
 
-    async updateProject(projectId, updateProjectDetail) {
+    async updateProject(updateProjectDetail) {
         try {
             const updatedProject = await this.projectRepository.updateProject(updateProjectDetail);
             return updatedProject;

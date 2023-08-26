@@ -3,7 +3,7 @@ import axios from "axios";
 
 const initialState = {
     projects: [],
-    isLoading: true, // Added loading state
+    isLoading: true,
 };
 
 // Async thunk to fetch initial projects from the server
@@ -12,6 +12,26 @@ export const fetchInitialProjects = createAsyncThunk("projects/fetchInitialProje
         if (localStorage.getItem("X-access-token") == null) throw new Error("Token not found");
         const response = await axios.get(
             'http://localhost:3030/api/v1/getprojects',
+            {
+                headers: {
+                    "Authorization": "Bearer " + localStorage.getItem("X-access-token")
+                }
+            }
+        );
+        return response.data.data;
+    } catch (error) {
+        console.log(error);
+        return [];
+    }
+});
+
+// Async thunk to create a new project
+export const createNewProject = createAsyncThunk("projects/createNewProject", async (project) => {
+    try {
+        if (localStorage.getItem("X-access-token") == null) throw new Error("Token not found");
+        const response = await axios.post(
+            'http://localhost:3030/api/v1/createproject',
+            project,
             {
                 headers: {
                     "Authorization": "Bearer " + localStorage.getItem("X-access-token")
@@ -120,6 +140,24 @@ const projectsSlice = createSlice({
                 projects: action.payload
             };
         },
+        updateProjectById: (state, action) => {
+            try {
+                const { projectId } = action.payload;
+                const project = state.projects.find(project => project._id === projectId);
+
+                const response = axios.post(
+                    `http://localhost:3030/api/v1/updateproject`,
+                    project,
+                    {
+                        headers: {
+                            "Authorization": "Bearer " + localStorage.getItem("X-access-token")
+                        }
+                    }
+                );
+            } catch (error) {
+                console.log(error)
+            }
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(fetchInitialProjects.pending, (state) => {
@@ -137,5 +175,5 @@ const projectsSlice = createSlice({
     },
 });
 
-export const { updateStickyColor, updateStickyCount, updateStickyData, setInitialProjects } = projectsSlice.actions;
+export const { updateStickyColor, updateStickyCount, updateStickyData, setInitialProjects, updateProjectById } = projectsSlice.actions;
 export default projectsSlice.reducer;

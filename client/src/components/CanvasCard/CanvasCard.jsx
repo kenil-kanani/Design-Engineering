@@ -1,13 +1,15 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import './CanvasCard.css'
 
-function CanvasCard({ projectId, title, description, canvasName, formattedTitle }) {
+function CanvasCard({ projectId, title, description, canvasName }) {
     const navigate = useNavigate();
+    const { projectname } = useParams();
 
     const handleClick = () => {
         const formattedCanvasName = canvasName.toLowerCase().replace(/\s+/g, '-');
-        navigate(`/myprojects/${formattedTitle}/${formattedCanvasName}`, { state: { projectId, title } });
+        const encodedProjectId = encodeURIComponent(projectId);
+        navigate(`/myprojects/${projectname}/${formattedCanvasName}?id=${encodedProjectId}`, { state: { projectId, title } });
     };
 
     return (

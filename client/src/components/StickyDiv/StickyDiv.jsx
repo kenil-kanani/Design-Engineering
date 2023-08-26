@@ -26,6 +26,7 @@ function StickyDiv({ width, height, canvasId, divId, divName, projectId }) {
             oneProject = projects[i];
         }
     }
+    
     const [project, setProject] = useState(oneProject);
 
 
