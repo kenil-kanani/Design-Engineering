@@ -9,7 +9,7 @@ import { AiOutlineClose } from "react-icons/ai";
 
 function StickyDiv({ width, height, canvasId, divId, divName, projectId }) {
 
-    const projects = useSelector(state => state.projectsReducer);
+    const projects = useSelector(state => state.projectsReducer.projects);
     const dispatch = useDispatch();
 
     if (!projects) {

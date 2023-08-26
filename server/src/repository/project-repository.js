@@ -17,9 +17,9 @@ class ProjectRepository {
         }
     }
 
-    async updateProject(userId, updateProjectData) {
+    async updateProject(updateProjectData) {
         try {
-            const updatedProject = ProjectModel.updateOne({ owner_id: userId }, updateProjectData);
+            const updatedProject = ProjectModel.updateOne({ _id: updateProjectData._id }, updateProjectData);
             return updatedProject;
         } catch (error) {
             throw new AppError(

@@ -56,6 +56,12 @@ router.get(
     ProjectController.getProjects
 )
 
+router.post(
+    '/updateproject',
+    authenticateJwt,
+    ProjectController.updateProject
+)
+
 router.get(
     '/me',
     authenticateJwt,

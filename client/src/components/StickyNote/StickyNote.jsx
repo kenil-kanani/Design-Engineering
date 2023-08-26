@@ -5,9 +5,8 @@ import { updateStickyData } from '../../features/projects/projectsSlice';
 function StickyNote({ bgColor, width, height, projectId, canvasId, divId, stickyNoteIndex }) {
     const dispatch = useDispatch();
 
-    const project = useSelector(state => state.projectsReducer.find(proj => proj._id === projectId));
+    const project = useSelector(state => state.projectsReducer.projects.find(proj => proj._id === projectId));
     const stickyNoteData = project.canvases[canvasId][divId].data[stickyNoteIndex];
-
     const style = {
         backgroundColor: bgColor,
     };

@@ -1,10 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StickyDiv } from '../../components';
 import { useLocation } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux'
+import { fetchInitialProjects } from '../../features/projects/projectsSlice';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
 
 function AEIOU() {
-    const { state } = useLocation();
-    const projectId = state.projectId;
+
+    const isLoading = useSelector(state => state.projectsReducer.isLoading);
+    const navigate = useNavigate();
 
     let style = {
         transitionProperty: 'transform',
@@ -12,9 +18,40 @@ function AEIOU() {
         transitionTimingFunction: 'ease',
     };
 
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(fetchInitialProjects());
+    }, [dispatch]);
+    const projects = useSelector(state => state.projectsReducer.projects);
+
+    const saveHandler = async () => {
+        try {
+            if (localStorage.getItem("X-access-token") == null) throw new Error("Token not found");
+            await axios.post(
+                'http://localhost:3030/api/v1/updateproject',
+                {
+                    headers: {
+                        "Authorization": "Bearer " + localStorage.getItem("X-access-token")
+                    },
+                    data: projects[0]
+                }
+            );
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const { state } = useLocation();
+    const projectId = state?.projectId;
+
+    if (!projectId) {
+        navigate('/myprojects', { replace: true });
+    }
 
     return (
-        <div className='w-screen h-screen flex justify-center items-center flex-col'>
+        !isLoading ? (
+            <div className='w-screen h-screen flex justify-center items-center flex-col'>
                 <p className='h-screen w-screen sm:hidden flex items-center justify-center text-[25px]'>
                     Use in Desktop Mode
                 </p>
@@ -113,7 +150,18 @@ function AEIOU() {
                     </div>
                     {/* // - Canvas End */}
                 </div>
-        </div>
+                <button
+                    className='w-[100px] h-[50px] bg-[#4D6FFF] text-white rounded-lg'
+                    onClick={saveHandler}
+                >
+                    Save
+                </button>
+            </div>
+        ) : (
+            <div className='flex w-screen h-screen justify-center items-center'>
+                Loading....
+            </div>
+        )
     );
 }
 

@@ -1,112 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-// const initialState = [
-//     {
-//         _id: '1',
-//         owner_id: '1',
-//         project_name: 'Project 1',
-//         canvases: {
-//             aeiou: {
-//                 environment: {
-//                     stickyCount: 1,
-//                     stickyColor: '#00DFA2',
-//                     data: ["a", "e", "i", "o", "u"]
-//                 },
-//                 interaction: {
-//                     stickyCount: 5,
-//                     stickyColor: '#F6FA70',
-//                     data: ["a", "e", "i", "o", "u"]
-//                 },
-//                 objects: {
-//                     stickyCount: 5,
-//                     stickyColor: '#FBB454',
-//                     data: ["a", "e", "i", "o", "u"]
-//                 },
-//                 activity: {
-//                     stickyCount: 5,
-//                     stickyColor: '#79E0EE',
-//                     data: ["a", "e", "i", "o", "u"]
-//                 },
-//                 users: {
-//                     stickyCount: 5,
-//                     stickyColor: '#98EECC',
-//                     data: ["a", "e", "i", "o", "u"]
-//                 }
-//             }
-//         }
-//     },
-//     {
-//         _id: '2',
-//         owner_id: '1',
-//         project_name: 'Project 1',
-//         canvases: {
-//             aeiou: {
-//                 environment: {
-//                     stickyCount: 2,
-//                     stickyColor: '#00DFA2',
-//                     data: ["a", "e", "i", "o", "u"]
-//                 },
-//                 interaction: {
-//                     stickyCount: 5,
-//                     stickyColor: '#F6FA70',
-//                     data: ["a", "e", "i", "o", "u"]
-//                 },
-//                 objects: {
-//                     stickyCount: 5,
-//                     stickyColor: '#FBB454',
-//                     data: ["a", "e", "i", "o", "u"]
-//                 },
-//                 activity: {
-//                     stickyCount: 5,
-//                     stickyColor: '#79E0EE',
-//                     data: ["a", "e", "i", "o", "u"]
-//                 },
-//                 users: {
-//                     stickyCount: 5,
-//                     stickyColor: '#98EECC',
-//                     data: ["a", "e", "i", "o", "u"]
-//                 }
-//             }
-//         }
-//     },
-//     {
-//         _id: '3',
-//         owner_id: '1',
-//         project_name: 'Project 1',
-//         canvases: {
-//             aeiou: {
-//                 environment: {
-//                     stickyCount: 3,
-//                     stickyColor: '#00DFA2',
-//                     data: ["a", "e", "i", "o", "u"]
-//                 },
-//                 interaction: {
-//                     stickyCount: 5,
-//                     stickyColor: '#F6FA70',
-//                     data: ["a", "e", "i", "o", "u"]
-//                 },
-//                 objects: {
-//                     stickyCount: 5,
-//                     stickyColor: '#FBB454',
-//                     data: ["a", "e", "i", "o", "u"]
-//                 },
-//                 activity: {
-//                     stickyCount: 5,
-//                     stickyColor: '#79E0EE',
-//                     data: ["a", "e", "i", "o", "u"]
-//                 },
-//                 users: {
-//                     stickyCount: 5,
-//                     stickyColor: '#98EECC',
-//                     data: ["a", "e", "i", "o", "u"]
-//                 }
-//             }
-//         }
-//     }
-// ];
-
-const initialState = [];
+const initialState = {
+    projects: [],
+    isLoading: true, // Added loading state
+};
 
 // Async thunk to fetch initial projects from the server
 export const fetchInitialProjects = createAsyncThunk("projects/fetchInitialProjects", async () => {
@@ -133,88 +31,108 @@ const projectsSlice = createSlice({
     reducers: {
         updateData: (state, action) => {
             const { projectId, canvasId, divId, newData, dataIndex } = action.payload;
-            const project = state.find(project => project._id === projectId);
+            const project = state.projects.find(project => project._id === projectId);
             project.canvases[canvasId][divId].data[dataIndex] = newData;
         },
         updateStickyCount: (state, action) => {
             const { projectId, canvasId, divId, newCount } = action.payload;
 
-            return state.map(project => {
-                if (project._id === projectId) {
-                    return {
-                        ...project,
-                        canvases: {
-                            ...project.canvases,
-                            [canvasId]: {
-                                ...project.canvases[canvasId],
-                                [divId]: {  // Use divId here to make it dynamic
-                                    ...project.canvases[canvasId][divId],
-                                    stickyCount: newCount
+            return {
+                ...state,
+                projects: state.projects.map(project => {
+                    if (project._id === projectId) {
+                        return {
+                            ...project,
+                            canvases: {
+                                ...project.canvases,
+                                [canvasId]: {
+                                    ...project.canvases[canvasId],
+                                    [divId]: {
+                                        ...project.canvases[canvasId][divId],
+                                        stickyCount: newCount
+                                    }
                                 }
                             }
-                        }
-                    };
-                }
-                return project;
-            });
+                        };
+                    }
+                    return project;
+                })
+            };
         },
         updateStickyColor: (state, action) => {
             const { projectId, canvasId, divId, newColor } = action.payload;
 
-            return state.map(project => {
-                if (project._id === projectId) {
-                    return {
-                        ...project,
-                        canvases: {
-                            ...project.canvases,
-                            [canvasId]: {
-                                ...project.canvases[canvasId],
-                                [divId]: {  // Use divId here to make it dynamic
-                                    ...project.canvases[canvasId][divId],
-                                    stickyColor: newColor
+            return {
+                ...state,
+                projects: state.projects.map(project => {
+                    if (project._id === projectId) {
+                        return {
+                            ...project,
+                            canvases: {
+                                ...project.canvases,
+                                [canvasId]: {
+                                    ...project.canvases[canvasId],
+                                    [divId]: {
+                                        ...project.canvases[canvasId][divId],
+                                        color: newColor
+                                    }
                                 }
                             }
-                        }
-                    };
-                }
-                return project;
-            });
+                        };
+                    }
+                    return project;
+                })
+            };
         },
         updateStickyData: (state, action) => {
             const { projectId, canvasId, divId, stickyNoteIndex, newData } = action.payload;
-            return state.map(project => {
-                if (project._id === projectId) {
-                    return {
-                        ...project,
-                        canvases: {
-                            ...project.canvases,
-                            [canvasId]: {
-                                ...project.canvases[canvasId],
-                                [divId]: {  // Use divId here to make it dynamic
-                                    ...project.canvases[canvasId][divId],
-                                    data: project.canvases[canvasId][divId].data.map((data, index) => {
-                                        if (index === stickyNoteIndex) {
-                                            return newData;
-                                        }
-                                        return data;
-                                    })
+
+            return {
+                ...state,
+                projects: state.projects.map(project => {
+                    if (project._id === projectId) {
+                        return {
+                            ...project,
+                            canvases: {
+                                ...project.canvases,
+                                [canvasId]: {
+                                    ...project.canvases[canvasId],
+                                    [divId]: {
+                                        ...project.canvases[canvasId][divId],
+                                        data: project.canvases[canvasId][divId].data.map((data, index) => {
+                                            if (index === stickyNoteIndex) {
+                                                return newData;
+                                            }
+                                            return data;
+                                        })
+                                    }
                                 }
                             }
-                        }
-                    };
-                }
-                return project;
-            });
+                        };
+                    }
+                    return project;
+                })
+            };
         },
         setInitialProjects: (state, action) => {
-            console.log("State : ", state, "Ac.paylode : ", action.payload)
-            return action.payload;
+            return {
+                isLoading: state.isLoading,
+                projects: action.payload
+            };
         },
     },
     extraReducers: (builder) => {
+        builder.addCase(fetchInitialProjects.pending, (state) => {
+            state.isLoading = true;
+            // console.log("1")
+        });
         builder.addCase(fetchInitialProjects.fulfilled, (state, action) => {
-            // Update the state with the fetched data
-            return action.payload;
+            // console.log("2")
+            state.projects = action.payload;
+            state.isLoading = false; // Set loading state to false when the async action is fulfilled
+        });
+        builder.addCase(fetchInitialProjects.rejected, (state) => {
+            state.isLoading = false; // Set loading state to false when the async action is rejected
         });
     },
 });
