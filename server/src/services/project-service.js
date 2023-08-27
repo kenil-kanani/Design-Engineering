@@ -138,6 +138,16 @@ class ProjectService {
         }
     }
 
+    async deleteProject(projectId) {
+        try {
+            console.log(projectId)
+            const deletedProject = await this.projectRepository.deleteProject(projectId);
+            return deletedProject;
+        } catch (error) {
+            throw error;
+        }
+    }
+
     async updateProject(updateProjectDetail) {
         try {
             const updatedProject = await this.projectRepository.updateProject(updateProjectDetail);

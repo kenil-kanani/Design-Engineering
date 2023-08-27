@@ -62,6 +62,12 @@ router.post(
     ProjectController.updateProject
 )
 
+router.post(
+    '/deleteproject',
+    authenticateJwt,
+    ProjectController.deleteProject
+)
+
 router.get(
     '/me',
     authenticateJwt,

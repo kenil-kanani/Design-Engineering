@@ -46,6 +46,27 @@ export const createNewProject = createAsyncThunk("projects/createNewProject", as
     }
 });
 
+// Async thunk to delete a project
+export const deleteProject = createAsyncThunk("projects/deleteProject", async (projectId) => {
+    try {
+        if (localStorage.getItem("X-access-token") == null) throw new Error("Token not found");
+        const response = await axios.post(
+            'http://localhost:3030/api/v1/deleteproject',
+            { projectId },
+            {
+                headers: {
+                    "Authorization": "Bearer " + localStorage.getItem("X-access-token")
+                }
+            }
+        );
+        console.log(response.data.data)
+        return response.data.data;
+    } catch (error) {
+        console.log(error);
+        return [];
+    }
+});
+
 const projectsSlice = createSlice({
     name: 'projects',
     initialState,
@@ -161,17 +182,42 @@ const projectsSlice = createSlice({
         },
     },
     extraReducers: (builder) => {
+
+        //* Manage Loading State for fetchInitialProjects
         builder.addCase(fetchInitialProjects.pending, (state) => {
             state.isLoading = true;
-            // console.log("1")
         });
         builder.addCase(fetchInitialProjects.fulfilled, (state, action) => {
-            // console.log("2")
             state.projects = action.payload;
-            state.isLoading = false; // Set loading state to false when the async action is fulfilled
+            state.isLoading = false;
         });
         builder.addCase(fetchInitialProjects.rejected, (state) => {
-            state.isLoading = false; // Set loading state to false when the async action is rejected
+            state.isLoading = false;
+        });
+
+
+        //* Manage Loading State for createNewProject
+        builder.addCase(createNewProject.pending, (state) => {
+            state.isLoading = true;
+        });
+        builder.addCase(createNewProject.fulfilled, (state, action) => {
+            state.projects.push(action.payload);
+            state.isLoading = false;
+        });
+        builder.addCase(createNewProject.rejected, (state) => {
+            state.isLoading = false;
+        });
+
+        //* Manage Loading State for deleteProject
+        builder.addCase(deleteProject.pending, (state) => {
+            state.isLoading = true;
+        });
+        builder.addCase(deleteProject.fulfilled, (state, action) => {
+            state.projects = state.projects.filter(project => project._id !== action.payload);
+            state.isLoading = false;
+        });
+        builder.addCase(deleteProject.rejected, (state) => {
+            state.isLoading = false;
         });
     },
 });

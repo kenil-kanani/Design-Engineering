@@ -4,12 +4,11 @@ import { useSelector, useDispatch } from 'react-redux'
 import { BsPatchPlusFill } from 'react-icons/bs';
 import { AiFillCloseCircle } from 'react-icons/ai';
 import { createNewProject } from '../../features/projects/projectsSlice';
+import { SProjectCard } from '../../shimmerui/index'
 
 function MyProjects() {
 
     const [isProjectFormVisible, setIsProjectFormVisible] = React.useState(false);
-
-
 
     function AddProjectForm() {
 
@@ -17,7 +16,6 @@ function MyProjects() {
         const [projectDescription, setProjectDescription] = React.useState('');
 
         const dispatch = useDispatch();
-
 
         return (
             <>
@@ -70,6 +68,8 @@ function MyProjects() {
     const isLoading = useSelector(state => state.projectsReducer.isLoading);
     const projects = useSelector(state => state.projectsReducer.projects);
 
+
+
     return (
         !isLoading ? (
             <>
@@ -98,8 +98,12 @@ function MyProjects() {
                 </button>
             </>
         ) : (
-            <div className='flex w-screen h-screen justify-center items-center '>
-                Loading....
+            <div className='flex w-screen h-screen justify-center items-center flex-wrap'>
+                {
+                    [1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
+                        <SProjectCard key={n} />
+                    ))
+                }
             </div>
         )
     );

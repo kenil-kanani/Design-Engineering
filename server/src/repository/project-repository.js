@@ -19,6 +19,21 @@ class ProjectRepository {
         }
     }
 
+    async deleteProject(projectId) {
+        try {
+            await ProjectModel.deleteOne({ _id: projectId });
+            return projectId;
+        } catch (error) {
+            console.log(error)
+            throw new AppError(
+                'RepositoryError',
+                'Not able to delete Project',
+                'Something went wrong with deleting user project , come back again',
+                StatusCodes.INTERNAL_SERVER_ERROR
+            )
+        }
+    }
+
     async updateProject(updateProjectData) {
         try {
             const updatedProject = ProjectModel.updateOne({ _id: updateProjectData._id }, updateProjectData);

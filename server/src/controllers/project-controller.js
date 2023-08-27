@@ -22,6 +22,26 @@ const createProject = async (req, res) => {
     }
 }
 
+const deleteProject = async (req, res) => {
+    try {
+        const response = await projectService.deleteProject(req.body.projectId);
+        return res.status(201).json({
+            success: true,
+            message: 'Successfully deleted a project',
+            data: response,
+            err: {}
+        });
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            message: 'Something went while deleting project',
+            data: {},
+            success: false,
+            err: error
+        })
+    }
+}
+
 const updateProject = async (req, res) => {
     try {
         const response = await projectService.updateProject(req.body);
@@ -65,5 +85,6 @@ const getProjects = async (req, res) => {
 module.exports = {
     createProject,
     updateProject,
-    getProjects
+    getProjects,
+    deleteProject
 }
