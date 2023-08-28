@@ -1,21 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StickyDiv } from '../../components';
 import { useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux'
-import { updateProjectById } from '../../features/projects/projectsSlice'
-import { toast } from "react-toastify";
-
+import { updateProject } from '../../features/projects/projectsSlice'
+import { SAEIOU } from '../../shimmerui/index'
 
 function AEIOU() {
 
     const isLoading = useSelector(state => state.projectsReducer.isLoading);
     const [isSaved, setIsSaved] = React.useState(false);
-
-    let style = {
-        transitionProperty: 'transform',
-        transitionDuration: '0.5s',
-        transitionTimingFunction: 'ease',
-    };
 
     const projects = useSelector(state => state.projectsReducer.projects);
     const location = useLocation();
@@ -25,12 +18,7 @@ function AEIOU() {
     const project = projects?.find(p => p._id === projectId);
     const dispatch = useDispatch();
     const saveHandler = (e) => {
-        setIsSaved(true);
-        setTimeout(() => {
-            toast.success("Saved Successfully");
-            setIsSaved(false);
-        }, 1000)
-        dispatch(updateProjectById({ projectId }));
+        dispatch(updateProject(projectId));
     }
 
     return (
@@ -40,7 +28,7 @@ function AEIOU() {
                 <p>The requested project does not exist.</p>
             </div>
         ) : (
-            !isLoading ? (
+            isLoading ? (
                 <div className='w-screen h-screen flex justify-center items-center flex-col'>
                     <p className='h-screen w-screen sm:hidden flex items-center justify-center text-[25px]'>
                         Use in Desktop Mode
@@ -48,7 +36,6 @@ function AEIOU() {
                     {/* // - Canvas */}
                     <div
                         className='p-2 w-min h-min 1270px:scale-[0.9] 1270px:transition-all 1270px:translate-x-[-50px] 1160px:scale-[0.8] 1160px:translate-x-[-125px] 1020px:scale-[0.7] 1020px:translate-x-[-190px] 890px:hidden'
-                        style={style}
                     >
                         <div className='h-[700px] w-[1254px] border-2  flex-col box-border'>
                             {/* // - First Row Start*/}
@@ -150,7 +137,7 @@ function AEIOU() {
                 </div>
             ) : (
                 <div className='flex w-screen h-screen justify-center items-center'>
-                    Loading....
+                    <SAEIOU />
                 </div>
             )
         )

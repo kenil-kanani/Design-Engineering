@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const initialState = {
     projects: [],
@@ -53,6 +54,29 @@ export const deleteProject = createAsyncThunk("projects/deleteProject", async (p
         const response = await axios.post(
             'http://localhost:3030/api/v1/deleteproject',
             { projectId },
+            {
+                headers: {
+                    "Authorization": "Bearer " + localStorage.getItem("X-access-token")
+                }
+            }
+        );
+        console.log(response.data.data)
+        return response.data.data;
+    } catch (error) {
+        console.log(error);
+        return [];
+    }
+});
+
+// Async thunk to update a project
+export const updateProject = createAsyncThunk("projects/updateProject", async (projectId, { getState }) => {
+    try {
+        if (localStorage.getItem("X-access-token") == null) throw new Error("Token not found");
+        const { projectsReducer } = getState();
+        const project = projectsReducer.projects.find(project => project._id === projectId);
+        const response = await axios.post(
+            'http://localhost:3030/api/v1/updateproject',
+            project,
             {
                 headers: {
                     "Authorization": "Bearer " + localStorage.getItem("X-access-token")
@@ -162,24 +186,6 @@ const projectsSlice = createSlice({
                 projects: action.payload
             };
         },
-        updateProjectById: (state, action) => {
-            try {
-                const { projectId } = action.payload;
-                const project = state.projects.find(project => project._id === projectId);
-
-                const response = axios.post(
-                    `http://localhost:3030/api/v1/updateproject`,
-                    project,
-                    {
-                        headers: {
-                            "Authorization": "Bearer " + localStorage.getItem("X-access-token")
-                        }
-                    }
-                );
-            } catch (error) {
-                console.log(error)
-            }
-        },
     },
     extraReducers: (builder) => {
 
@@ -194,7 +200,6 @@ const projectsSlice = createSlice({
         builder.addCase(fetchInitialProjects.rejected, (state) => {
             state.isLoading = false;
         });
-
 
         //* Manage Loading State for createNewProject
         builder.addCase(createNewProject.pending, (state) => {
@@ -219,8 +224,20 @@ const projectsSlice = createSlice({
         builder.addCase(deleteProject.rejected, (state) => {
             state.isLoading = false;
         });
+
+        //* Manage Loading State for updateProject
+        builder.addCase(updateProject.pending, (state) => {
+            state.isLoading = true;
+        });
+        builder.addCase(updateProject.fulfilled, (state, action) => {
+            state.isLoading = false;
+            toast.success("Saved Successfully");
+        });
+        builder.addCase(updateProject.rejected, (state) => {
+            state.isLoading = false;
+        });
     },
 });
 
-export const { updateStickyColor, updateStickyCount, updateStickyData, setInitialProjects, updateProjectById } = projectsSlice.actions;
+export const { updateStickyColor, updateStickyCount, updateStickyData, setInitialProjects } = projectsSlice.actions;
 export default projectsSlice.reducer;

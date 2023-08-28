@@ -35,7 +35,7 @@ export const Navbar = () => {
             ?
 
             <div className='root-nav w-screen h-[70px]'>
-                <h1 className='text-2xl'>Social Hezalt</h1>
+                <h1 className='text-2xl tracking-widest'>Hezalt</h1>
                 <div className=''>
                     <Link to='/' className='mx-4'>Home</Link>
                     <Link to='/contact' className='mx-4'>Contact</Link>
@@ -47,7 +47,7 @@ export const Navbar = () => {
             :
 
             <div className='root-nav w-screen h-[70px]'>
-                <h1 className='text-2xl'>Social Hezalt</h1>
+                <h1 className='text-2xl tracking-widest'>Hezalt</h1>
                 <div className='flex items-center'>
                     <Link to='/' className='mx-4'>Home</Link>
                     <Link to='/contact' className='mx-4'>Contact</Link>
@@ -76,16 +76,16 @@ export const Navbar = () => {
                                     <ImProfile className="text-2xl" />
                                     <div >My Profile</div>
                                 </LinkTag>
+                                <LinkTag to={'/myprojects'}>
+                                    <AiFillPropertySafety className="text-2xl" />
+                                    <div>My Project</div>
+                                </LinkTag>
                                 <div onClick={logout}>
                                     <LinkTag>
                                         <BiLogIn className="text-2xl" />
                                         <div>Log Out</div>
                                     </LinkTag>
                                 </div>
-                                <LinkTag to={'/myprojects'}>
-                                    <AiFillPropertySafety className="text-2xl" />
-                                    <div>My Project</div>
-                                </LinkTag>
                             </div>
                         </div>
                     )}
