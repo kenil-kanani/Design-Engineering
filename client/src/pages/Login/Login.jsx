@@ -1,8 +1,13 @@
 import React, { useState, useContext } from 'react';
 import './Login.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 import { Loader } from '../../components/index';
+import { signInApi } from '../../apis';
+import { useDispatch } from 'react-redux';
+import { setIsAuthenticated } from '../../features/auth/authSlice';
+import { toast } from 'react-toastify';
+import { fetchInitialProjects } from '../../features/projects/projectsSlice';
 
 const LoginForm = () => {
     const { login } = useContext(AuthContext);
@@ -13,6 +18,9 @@ const LoginForm = () => {
     const [isEmailEmpty, setIsEmailEmpty] = useState(false);
     const [isPasswordEmpty, setIsPasswordEmpty] = useState(false);
 
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+
     const handleLogin = async () => {
         if (email === '' || password === '') {
             setIsEmailEmpty(email === '');
@@ -21,12 +29,27 @@ const LoginForm = () => {
         }
 
         try {
-            setIsVisible(true);
-            await login(email, password);
+            setIsVisible(true)
+            const response = await signInApi(email, password)
+            if (response.success) {
+                setIsVisible(false)
+                toast.success(response.message)
+                localStorage.setItem('X-access-token', response.data)
+                dispatch(fetchInitialProjects())
+                dispatch(setIsAuthenticated(true))
+                navigate('/')
+            } else if (response.err.message === 'Not Verifyed Email') {
+                setIsVisible(false)
+                toast.error(response.message);
+                localStorage.setItem('X-access-token', response.err.explanation)
+                navigate('/verify');
+            } else {
+                setIsVisible(false)
+                toast.error(response.message);
+            }
         } catch (error) {
-            console.error('Error logging in:', error);
-        } finally {
-            setIsVisible(false);
+            setIsVisible(false)
+            console.log("Catch", error)
         }
     };
 

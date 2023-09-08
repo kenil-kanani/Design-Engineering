@@ -3,7 +3,7 @@ import { StickyDiv } from '../../components';
 import { useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux'
 import { updateProject } from '../../features/projects/projectsSlice'
-import { SAEIOU } from '../../shimmerui/index'
+import { ShimmerAEIOU } from '../../shimmerui/index'
 
 function AEIOU() {
 
@@ -28,7 +28,7 @@ function AEIOU() {
                 <p>The requested project does not exist.</p>
             </div>
         ) : (
-            isLoading ? (
+            !isLoading ? (
                 <div className='w-screen h-screen flex justify-center items-center flex-col'>
                     <p className='h-screen w-screen sm:hidden flex items-center justify-center text-[25px]'>
                         Use in Desktop Mode
@@ -137,7 +137,7 @@ function AEIOU() {
                 </div>
             ) : (
                 <div className='flex w-screen h-screen justify-center items-center'>
-                    <SAEIOU />
+                    <ShimmerAEIOU />
                 </div>
             )
         )

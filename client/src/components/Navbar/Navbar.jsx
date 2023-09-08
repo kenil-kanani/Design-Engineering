@@ -9,6 +9,8 @@ import { Typography } from "@material-ui/core";
 import { AiOutlineClose, AiFillPropertySafety } from "react-icons/ai";
 import { ImProfile } from "react-icons/im";
 import { BiLogIn } from "react-icons/bi";
+import { useDispatch, useSelector } from 'react-redux';
+import { logOutUser } from '../../features/auth/authSlice';
 
 
 
@@ -27,8 +29,9 @@ export const Navbar = () => {
     });
 
 
-    const { isAuthenticated, logout, user } = useContext(AuthContext);
-
+    const { logout, user } = useContext(AuthContext);
+    const isAuthenticated = useSelector(state => state.authReducer.isAuthenticated);
+    const dispatch = useDispatch();
     return (
         !isAuthenticated
 
@@ -76,11 +79,11 @@ export const Navbar = () => {
                                     <ImProfile className="text-2xl" />
                                     <div >My Profile</div>
                                 </LinkTag>
-                                <LinkTag to={'/myprojects'}>
+                                <LinkTag to={'/myprojects'} >
                                     <AiFillPropertySafety className="text-2xl" />
                                     <div>My Project</div>
                                 </LinkTag>
-                                <div onClick={logout}>
+                                <div onClick={() => { dispatch(logOutUser(false)) }}>
                                     <LinkTag>
                                         <BiLogIn className="text-2xl" />
                                         <div>Log Out</div>

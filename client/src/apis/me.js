@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const me = async () => {
     try {
-        if(localStorage.getItem("X-access-token") == null) throw new Error("Token not found");
+        if (localStorage.getItem("X-access-token") == null) return null;
         const response = await axios.get(
             'http://localhost:3030/api/v1/me',
             {

@@ -1,27 +1,21 @@
 import './App.css'
-import { AuthContext } from './context/AuthContext';
-import React, { useEffect, useContext, useState } from "react";
+import React, { useEffect } from "react";
 import { Navbar, ToastContainer, LoadingMain } from './components/index'
 import { CustomRoutes } from './routes/index';
+import { useDispatch, useSelector } from 'react-redux';
+import { checkAuthStatus } from './features/auth/authSlice';
+import { useNavigate } from 'react-router-dom';
 
 function App() {
 
-
-    const { isValid } = useContext(AuthContext);
-    const [isLoading, setIsLoading] = useState(true);
-
-    async function checkAuth() {
-        try {
-            await isValid();
-            setIsLoading(false);
-        } catch (error) {
-            setIsLoading(false);
-        }
-    }
+    const dispatch = useDispatch();
+    const navigate = useNavigate()
 
     useEffect(() => {
-        checkAuth();
+        dispatch(checkAuthStatus({ dispatch, navigate }))
     }, []);
+
+    const isLoading = useSelector(state => state.authReducer.isLoading)
 
     return (
         <>

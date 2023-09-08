@@ -1,5 +1,4 @@
 import SProjectCard from "./SProjectCard/SProjectCard";
-import SAEIOU from "./SAEIOU/SAEIOU";
-import SStickyNote from "./SStickyNote/SStickyNote";
+import ShimmerAEIOU from "./ShimmerAEIOU/ShimmerAEIOU";
 
-export { SProjectCard, SAEIOU, SStickyNote };
+export { SProjectCard, ShimmerAEIOU };

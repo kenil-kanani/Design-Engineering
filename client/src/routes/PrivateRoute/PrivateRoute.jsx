@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom';
 import React, { useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
+import { useSelector } from 'react-redux';
 
 function PrivateRoute({ children }) {
-  const { isAuthenticated } = useContext(AuthContext);
+  // const { isAuthenticated } = useContext(AuthContext);
+  const isAuthenticated = useSelector(state => state.authReducer.isAuthenticated)
 
   return isAuthenticated ?
     <>{children}</>
@@ -12,8 +14,6 @@ function PrivateRoute({ children }) {
 }
 
 export default PrivateRoute;
-
-
 
 const Screen = () => {
   return (
