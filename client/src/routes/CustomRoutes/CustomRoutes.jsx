@@ -1,7 +1,8 @@
 import React from 'react'
 import { Login, SignUp, Home, Contact, Verify, MyProfile, MyProjects, Project, AEIOU } from '../../pages/index'
 import { PrivateRoute, PublicRoutes } from '../index';
-import { Route, Routes } from "react-router-dom"
+import { Route, Routes, useParams } from "react-router-dom"
+import EMPATHY from '../../pages/EMPATHY/EMPATHY';
 
 
 function CustomRoutes() {
@@ -35,7 +36,7 @@ function CustomRoutes() {
             } />
             <Route path="/myprojects/:projectname/:canvasname" element={
                 <PrivateRoute>
-                    <AEIOU />
+                    <Canvases />
                 </PrivateRoute>
             } />
         </Routes>
@@ -43,3 +44,18 @@ function CustomRoutes() {
 }
 
 export default CustomRoutes
+
+
+function Canvases() {
+    //* Access the canvasname parameter from the route
+    let { canvasname } = useParams();
+
+    //* Conditionally render components based on the canvasname parameter
+    if (canvasname === 'aeiou') {
+        return <AEIOU />;
+    } else if (canvasname === 'empathy') {
+        return <EMPATHY />;
+    } else {
+        return <>Nothing</>
+    }
+}

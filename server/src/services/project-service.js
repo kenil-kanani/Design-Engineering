@@ -82,7 +82,7 @@ class ProjectService {
                     },
                     empathy: {
                         user: {
-                            stickyCount: 5,
+                            stickyCount: 4,
                             stickyColor: "#64B5F6",
                             data: [
                                 "User-1",
@@ -95,7 +95,7 @@ class ProjectService {
                             ]
                         },
                         stackholder: {
-                            stickyCount: 5,
+                            stickyCount: 4,
                             stickyColor: "#FFB74D",
                             data: [
                                 "Stackholder-1",
@@ -108,7 +108,7 @@ class ProjectService {
                             ]
                         },
                         activity: {
-                            stickyCount: 5,
+                            stickyCount: 4,
                             stickyColor: "#81C784",
                             data: [
                                 "Activity-1",

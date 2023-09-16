@@ -1,5 +1,4 @@
-import React, { useContext, useEffect } from 'react';
-import { AuthContext } from '../../context/AuthContext';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 

@@ -15,6 +15,7 @@ const signInApi = async (email, password) => {
                 },
             }
         );
+        console.log("res : " + response.data)
         return response.data;
     } catch (error) {
         const { response } = error;

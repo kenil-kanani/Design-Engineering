@@ -1,14 +1,17 @@
-import React, { useState, useContext } from 'react'
+import React, { useState } from 'react'
 import './SignUp.css'
-import { Link } from "react-router-dom"
-import { AuthContext } from '../../context/AuthContext';
+import { Link, useNavigate } from "react-router-dom"
 import { Loader } from '../../components/index';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import { signUpApi } from '../../apis';
 
 
 const SignUpForm = () => {
 
     //* signup function from AuthContext
-    const { signup } = useContext(AuthContext);
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     //* state variables
     const [email, setEmail] = useState("");
@@ -16,7 +19,8 @@ const SignUpForm = () => {
     const [name, setName] = useState("");
 
     //* loader is visible or not
-    const [isVisible, setIsVisible] = useState(false);
+    // const [isVisible, setIsVisible] = useState(false);
+    // const isVisible = useSelector(state => state.authReducer.isLoading)
 
     //* email and password are empty or not
     const [isNameEmpty, setIsNameEmpty] = useState(false);
@@ -47,9 +51,20 @@ const SignUpForm = () => {
                 }
                 return;
             }
-            setIsVisible(true);
-            await signup(name, email, password);
-            setIsVisible(false);
+            // setIsVisible(true);
+            try {
+                const response = await signUpApi(name, email, password);
+                if (response.success) {
+                    toast.success(response.message);
+                    localStorage.setItem('X-access-token', response.data)
+                    navigate('/verify');
+                } else {
+                    toast.error(response.message);
+                }
+            } catch (error) {
+                console.log("Catch", error)
+            }
+            // setIsVisible(false);
         } catch (error) {
             console.error('Error logging in:', error);
         }

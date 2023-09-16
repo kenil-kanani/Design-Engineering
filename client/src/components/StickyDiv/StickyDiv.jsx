@@ -12,13 +12,13 @@ function StickyDiv({ width, height, canvasId, divId, divName, projectId }) {
     const projects = useSelector(state => state.projectsReducer.projects);
     const dispatch = useDispatch();
 
-    if (!projects) {
-        return (
-            <>
-                Refresh Plz
-            </>
-        )
-    }
+    // if (!projects) {
+    //     return (
+    //         <>
+    //             Refresh Plz
+    //         </>
+    //     )
+    // }
 
     let oneProject = {};
     for (let i = 0; i < projects.length; i++) {

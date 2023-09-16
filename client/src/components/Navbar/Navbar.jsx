@@ -1,7 +1,6 @@
-import React, { useContext, useState, useRef } from 'react'
+import React, { useState, useRef } from 'react'
 import './Navbar.css'
 import { Link } from "react-router-dom"
-import { AuthContext } from '../../context/AuthContext';
 
 import { VscAccount } from "react-icons/vsc";
 import { useClickAway } from 'react-use';
@@ -28,10 +27,9 @@ export const Navbar = () => {
         setIsDropdownOpen(false);
     });
 
-
-    const { logout, user } = useContext(AuthContext);
     const isAuthenticated = useSelector(state => state.authReducer.isAuthenticated);
     const dispatch = useDispatch();
+    const user = useSelector(state => state.authReducer.user);
     return (
         !isAuthenticated
 

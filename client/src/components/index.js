@@ -6,5 +6,6 @@ import StickyDiv from './StickyDiv/StickyDiv';
 import StickyNote from './StickyNote/StickyNote';
 import ProjectCard from './ProjectCard/ProjectCard';
 import CanvasCard from './CanvasCard/CanvasCard';
+import ProjectNotFound from './ProjectNotFound/ProjectNotFound';
 
-export { Navbar, Loader, LoadingMain, ToastContainer, StickyDiv, StickyNote, ProjectCard, CanvasCard };
+export { Navbar, Loader, LoadingMain, ToastContainer, StickyDiv, StickyNote, ProjectCard, CanvasCard, ProjectNotFound };

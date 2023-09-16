@@ -1,7 +1,6 @@
 import React, { useState, useContext } from 'react';
 import './Login.css';
 import { Link, useNavigate } from 'react-router-dom';
-import { AuthContext } from '../../context/AuthContext';
 import { Loader } from '../../components/index';
 import { signInApi } from '../../apis';
 import { useDispatch } from 'react-redux';
@@ -10,7 +9,6 @@ import { toast } from 'react-toastify';
 import { fetchInitialProjects } from '../../features/projects/projectsSlice';
 
 const LoginForm = () => {
-    const { login } = useContext(AuthContext);
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -31,6 +29,7 @@ const LoginForm = () => {
         try {
             setIsVisible(true)
             const response = await signInApi(email, password)
+            console.log(email, password, response)
             if (response.success) {
                 setIsVisible(false)
                 toast.success(response.message)

@@ -21,7 +21,15 @@ const projectSchema = new mongoose.Schema({
             users: canvasDivisionSchema,
             activity: canvasDivisionSchema,
         },
-        empathy: canvasDivisionSchema,
+        empathy: {
+            user: canvasDivisionSchema,
+            stackholder: canvasDivisionSchema,
+            activity: canvasDivisionSchema,
+            storybording: {
+                happy: [],
+                sad: [],
+            }
+        },
         ideation: canvasDivisionSchema,
         productdevelopment: canvasDivisionSchema,
         businessmodel: canvasDivisionSchema,

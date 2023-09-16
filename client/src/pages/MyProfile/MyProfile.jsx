@@ -1,16 +1,14 @@
-import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../../context/AuthContext.jsx";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 const MyProfile = () => {
-    const { isValid, user } = useContext(AuthContext);
 
-    useEffect(() => {
-        isValid();
-    }, [])
+    let user = useSelector(state => state.authReducer.user)
 
-    user.avatar =
+    const avatar =
         "https://media.licdn.com/dms/image/D4D03AQGghuVyQderNw/profile-displayphoto-shrink_800_800/0/1679610791074?e=2147483647&v=beta&t=khbE90ru3MGqFyQt34Mkk6Gc9z0PHB3s3maoqyvZ7EM";
 
+    user = { ...user, avatar }
     const [isEditing, setIsEditing] = useState(false);
     const [editedName, setEditedName] = useState(user.name);
 
