@@ -10,13 +10,6 @@ function Project() {
     const dispatch = useDispatch();
     const isLoading = useSelector(state => state.projectsReducer.isLoading);
 
-    if (isLoading) {
-        console.log("Rendering loading screen...");
-        return <div className='flex w-screen h-screen justify-center items-center'>
-            Loading....
-        </div>;
-    }
-
     const projects = useSelector(state => state.projectsReducer.projects);
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
@@ -34,14 +27,20 @@ function Project() {
                 <p>The requested project does not exist.</p>
             </div>
         ) : (
-            <div className='w-screen h-screen flex justify-center flex-wrap'>
-                <CanvasCard projectId={projectId} canvasName={"AEIOU"} />
-                <CanvasCard projectId={projectId} canvasName={"Empathy"} />
-                <CanvasCard projectId={projectId} canvasName={"Ideation"} />
-                <CanvasCard projectId={projectId} canvasName={"Product Development"} />
-                <CanvasCard projectId={projectId} canvasName={"Business Model"} />
-                <CanvasCard projectId={projectId} canvasName={"LNM"} />
-            </div>
+            !isLoading ? (
+                <div className='w-screen h-screen flex justify-center flex-wrap'>
+                    <CanvasCard projectId={projectId} canvasName={"AEIOU"} />
+                    <CanvasCard projectId={projectId} canvasName={"Empathy"} />
+                    <CanvasCard projectId={projectId} canvasName={"Ideation"} />
+                    <CanvasCard projectId={projectId} canvasName={"Product Development"} />
+                    <CanvasCard projectId={projectId} canvasName={"Business Model"} />
+                    <CanvasCard projectId={projectId} canvasName={"LNM"} />
+                </div>
+            ) : (
+                <div className='flex w-screen h-screen justify-center items-center'>
+                    Loading....
+                </div>
+            )
         )
     )
 }

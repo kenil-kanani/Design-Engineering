@@ -4,7 +4,6 @@ import { Link } from "react-router-dom"
 
 import { VscAccount } from "react-icons/vsc";
 import { useClickAway } from 'react-use';
-import { Typography } from "@material-ui/core";
 import { AiOutlineClose, AiFillPropertySafety } from "react-icons/ai";
 import { ImProfile } from "react-icons/im";
 import { BiLogIn } from "react-icons/bi";
@@ -70,7 +69,7 @@ export const Navbar = () => {
                                 <AiOutlineClose />
                             </div>
                             <div className="w-[300px] mt-3 mb-5 flex justify-center">
-                                <Typography variant={"h5"}>Hey {user.name}</Typography>
+                                <h5 className='text-3xl'>{user.name}</h5>
                             </div>
                             <div onClick={() => { setIsDropdownOpen(false) }} className="cursor-pointer pl-[25px]">
                                 <LinkTag to={'/profile'}>
