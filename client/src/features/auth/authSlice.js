@@ -37,6 +37,19 @@ export const checkAuthStatus = createAsyncThunk("auth/checkAuthStatus", async ({
     }
 })
 
+//! Async thunk to set User Data After Login Or SignUp
+export const setUserData = createAsyncThunk("auth/setUserData", async ({ dispatch }) => {
+    try {
+        const response = await me();
+        console.log(response)
+        if (response != null && response.status) {
+            dispatch(setUser({ email: response.email, name: response.name }));
+        }
+    } catch (error) {
+        console.log(error)
+    }
+})
+
 export const authSlice = createSlice({
     name: 'auth',
     initialState,

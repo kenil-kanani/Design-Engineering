@@ -1,8 +1,8 @@
 import React from 'react'
-import { Login, SignUp, Home, Contact, Verify, MyProfile, MyProjects, Project, AEIOU } from '../../pages/index'
+import { Login, SignUp, Home, Contact, Verify, MyProfile, MyProjects, Project } from '../../pages/index'
 import { PrivateRoute, PublicRoutes } from '../index';
 import { Route, Routes, useParams } from "react-router-dom"
-import EMPATHY from '../../pages/EMPATHY/EMPATHY';
+import { AEIOU, EMPATHY } from '../../pages/index';
 
 
 function CustomRoutes() {

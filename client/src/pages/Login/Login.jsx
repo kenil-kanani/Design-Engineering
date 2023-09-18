@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Loader } from '../../components/index';
 import { signInApi } from '../../apis';
 import { useDispatch } from 'react-redux';
-import { setIsAuthenticated } from '../../features/auth/authSlice';
+import { setIsAuthenticated, setUserData } from '../../features/auth/authSlice';
 import { toast } from 'react-toastify';
 import { fetchInitialProjects } from '../../features/projects/projectsSlice';
 
@@ -29,13 +29,13 @@ const LoginForm = () => {
         try {
             setIsVisible(true)
             const response = await signInApi(email, password)
-            console.log(email, password, response)
             if (response.success) {
                 setIsVisible(false)
                 toast.success(response.message)
                 localStorage.setItem('X-access-token', response.data)
                 dispatch(fetchInitialProjects())
                 dispatch(setIsAuthenticated(true))
+                dispatch(setUserData({ dispatch }))
                 navigate('/')
             } else if (response.err.message === 'Not Verifyed Email') {
                 setIsVisible(false)

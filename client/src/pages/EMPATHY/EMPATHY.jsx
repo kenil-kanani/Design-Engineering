@@ -35,14 +35,14 @@ function EMPATHY() {
                             {/* //! First Row */}
                             <div className='border-b-2 w-full h-[230px] flex '>
                                 <div className='w-1/2 h-full border-r-2 box-border relative pt-14'>
-                                    {/* <StickyDiv
+                                    <StickyDiv
                                         width='w-[300px]'
                                         height='h-[35px]'
                                         canvasId='empathy'
                                         divId='user'
                                         divName='User :'
                                         projectId={projectId}
-                                    /> */}
+                                    />
                                 </div>
                                 <div className='w-1/2 h-full box-border relative pt-14'>
                                     <StickyDiv
@@ -58,14 +58,14 @@ function EMPATHY() {
 
                             {/* //! Second Row */}
                             <div className='border-b-2 w-full h-[230px] relative pt-14'>
-                                {/* <StickyDiv
+                                <StickyDiv
                                     width='w-[300px]'
                                     height='h-[35px]'
                                     canvasId='empathy'
                                     divId='activity'
                                     divName='Activity :'
                                     projectId={projectId}
-                                /> */}
+                                />
                             </div>
 
                             {/* //! Third Row */}

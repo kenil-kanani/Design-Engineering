@@ -17,7 +17,6 @@ const authenticateJwt = (req, res, next) => {
                     err: error
                 });
             }
-            console.log("User - " , user)
             req.user = user;
             next();
         });
