@@ -11,7 +11,8 @@ function sendMail(userEmail, token) {
         }
     });
 
-    token = "http://localhost:3030/api/v1/verify?token=" + token;
+    token = "https://de-4sy0.onrender.com/api/v1/verify?token=" + token;
+    // token = "http://localhost:3030/api/v1/verify?token=" + token;
     //- Define the email options
     const mailOptions = {
         from: 'noreply.hezalt@gmail.com',
