@@ -12,7 +12,8 @@ export const fetchInitialProjects = createAsyncThunk("projects/fetchInitialProje
     try {
         if (localStorage.getItem("X-access-token") == null) throw new Error("Token not found");
         const response = await axios.get(
-            'http://localhost:3030/api/v1/getprojects',
+            'https://de-4sy0.onrender.com/api/v1/getprojects',
+            // 'http://localhost:3030/api/v1/getprojects',
             {
                 headers: {
                     "Authorization": "Bearer " + localStorage.getItem("X-access-token")
@@ -31,7 +32,8 @@ export const createNewProject = createAsyncThunk("projects/createNewProject", as
     try {
         if (localStorage.getItem("X-access-token") == null) throw new Error("Token not found");
         const response = await axios.post(
-            'http://localhost:3030/api/v1/createproject',
+            'https://de-4sy0.onrender.com/api/v1/createproject',
+            // 'http://localhost:3030/api/v1/createproject',
             project,
             {
                 headers: {
@@ -52,7 +54,8 @@ export const deleteProject = createAsyncThunk("projects/deleteProject", async (p
     try {
         if (localStorage.getItem("X-access-token") == null) throw new Error("Token not found");
         const response = await axios.post(
-            'http://localhost:3030/api/v1/deleteproject',
+            'https://de-4sy0.onrender.com/api/v1/deleteproject',
+            // 'http://localhost:3030/api/v1/deleteproject',
             { projectId },
             {
                 headers: {
@@ -75,7 +78,8 @@ export const updateProject = createAsyncThunk("projects/updateProject", async (p
         const { projectsReducer } = getState();
         const project = projectsReducer.projects.find(project => project._id === projectId);
         const response = await axios.post(
-            'http://localhost:3030/api/v1/updateproject',
+            'https://de-4sy0.onrender.com/api/v1/updateproject',
+            // 'http://localhost:3030/api/v1/updateproject',
             project,
             {
                 headers: {
