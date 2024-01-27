@@ -5,12 +5,11 @@ import { Link } from "react-router-dom"
 import { VscAccount } from "react-icons/vsc";
 import { useClickAway } from 'react-use';
 import { AiOutlineClose, AiFillPropertySafety } from "react-icons/ai";
+import { RiFolderSharedFill } from "react-icons/ri";
 import { ImProfile } from "react-icons/im";
 import { BiLogIn } from "react-icons/bi";
 import { useDispatch, useSelector } from 'react-redux';
 import { logOutUser } from '../../features/auth/authSlice';
-
-
 
 export const Navbar = () => {
 
@@ -80,6 +79,10 @@ export const Navbar = () => {
                                     <AiFillPropertySafety className="text-2xl" />
                                     <div>My Project</div>
                                 </LinkTag>
+                                <LinkTag to={'/sharedprojects'} >
+                                    <RiFolderSharedFill className="text-2xl" />
+                                    <div>Shared Project</div>
+                                </LinkTag>
                                 <div onClick={() => { dispatch(logOutUser(false)) }}>
                                     <LinkTag>
                                         <BiLogIn className="text-2xl" />
@@ -97,7 +100,7 @@ export const Navbar = () => {
 
 function LinkTag(props) {
     return (
-        <Link to={props.to} className="w-[250px] h-[35px] mt-3 flex justify-center items-center gap-5 py-1 rounded-3xl hover:bg-blue-500" style={{ border: "2px solid white" }}>
+        <Link to={props.to} className="w-[250px] h-[35px] mt-3 flex justify-left pl-12 items-center gap-5 py-1 rounded-3xl hover:bg-blue-500" style={{ border: "2px solid white" }}>
             {props.children}
         </Link>
     );

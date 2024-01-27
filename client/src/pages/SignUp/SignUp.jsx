@@ -19,7 +19,7 @@ const SignUpForm = () => {
     const [name, setName] = useState("");
 
     //* loader is visible or not
-    // const [isVisible, setIsVisible] = useState(false);
+    const [isVisible, setIsVisible] = useState(false);
     // const isVisible = useSelector(state => state.authReducer.isLoading)
 
     //* email and password are empty or not
@@ -29,93 +29,91 @@ const SignUpForm = () => {
 
     //* handle login function
     const handleLogin = async () => {
+        if (email === "" || password === "" || name === "") {
+            if (email === "") {
+                setIsEmailEmpty(true);
+            }
+            else {
+                setIsEmailEmpty(false);
+            }
+            if (password === "") {
+                setIsPasswordEmpty(true);
+            }
+            else {
+                setIsPasswordEmpty(false);
+            }
+            if (name === "") {
+                setIsNameEmpty(true);
+            }
+            else {
+                setIsNameEmpty(false);
+            }
+            return;
+        }
         try {
-            if (email === "" || password === "" || name === "") {
-                if (email === "") {
-                    setIsEmailEmpty(true);
-                }
-                else {
-                    setIsEmailEmpty(false);
-                }
-                if (password === "") {
-                    setIsPasswordEmpty(true);
-                }
-                else {
-                    setIsPasswordEmpty(false);
-                }
-                if (name === "") {
-                    setIsNameEmpty(true);
-                }
-                else {
-                    setIsNameEmpty(false);
-                }
-                return;
-            }
-            // setIsVisible(true);
-            try {
-                const response = await signUpApi(name, email, password);
-                if (response.success) {
-                    toast.success(response.message);
-                    localStorage.setItem('X-access-token', response.data)
-                    navigate('/verify');
-                } else {
-                    toast.error(response.message);
-                }
-            } catch (error) {
-                console.log("Catch", error)
-            }
-            // setIsVisible(false);
+            setIsVisible(true);
+            const response = await signUpApi(name, email, password);
+            setIsVisible(false);
+            toast.success(response.message);
+            localStorage.setItem('X-access-token', response.data)
+            navigate('/verify');
         } catch (error) {
-            console.error('Error logging in:', error);
+            setIsVisible(false);
+            let { response } = error;
+            response = response.data;
+            toast.error(response.message);
         }
     };
 
     return (
-        <form className="form">
-            <h1 className='text-center text-3xl'>Sign Up</h1>
-            <div className="flex-column">
-                <label>Name </label></div>
-            <div className="inputForm">
-                <input placeholder="Enter your Name" className="input" type="text" onChange={(event) => {
-                    setName(event.target.value);
-                    setIsNameEmpty(false);
-                }} />
-            </div>
-            {isNameEmpty && <span className='text-red-500 text-xs flex justify-end'>*name is required</span>}
-
-            <div className="flex-column">
-                <label>Email </label></div>
-            <div className="inputForm">
-                <input placeholder="Enter your Email" className="input" type="text" onChange={(event) => {
-                    setEmail(event.target.value);
-                    setIsEmailEmpty(false);
-                }} />
-            </div>
-            {isEmailEmpty && <span className='text-red-500 text-xs flex justify-end'>*email is required</span>}
-
-            <div className="flex-column">
-                <label>Password</label></div>
-            <div className="inputForm">
-                <input placeholder="Enter your Password" className="input" type="password" onChange={(event) => {
-                    setPassword(event.target.value);
-                    setIsPasswordEmpty(false);
-                }} />
-            </div>
-            {isPasswordEmpty && <span className='text-red-500 text-xs flex justify-end'>*password is required</span>}
-
-            <div className="flex-row">
-                <div>
-                    <input type="checkbox" />
-                    <label className='ml-1'>Remember me</label>
+        <>
+            {isVisible && <div className='absolute'><Loader /></div>}
+            <form className="form">
+                <h1 className='text-center text-3xl'>Sign Up</h1>
+                <div className="flex-column">
+                    <label>Name </label></div>
+                <div className="inputForm">
+                    <input placeholder="Enter your Name" className="input" type="text" onChange={(event) => {
+                        setName(event.target.value);
+                        setIsNameEmpty(false);
+                    }} />
                 </div>
-                <span className="span hidden">Forgot password?</span>
-            </div>
-            <button className="button-submit" onClick={(event) => {
-                event.preventDefault();
-                handleLogin();
-            }}>Sign Up</button>
-            <p className="p">Already have an account? <span className="span"><Link to='/signin' >Sign In</Link></span></p>
-        </form>
+                {isNameEmpty && <span className='text-red-500 text-xs flex justify-end'>*name is required</span>}
+
+                <div className="flex-column">
+                    <label>Email </label></div>
+                <div className="inputForm">
+                    <input placeholder="Enter your Email" className="input" type="text" onChange={(event) => {
+                        setEmail(event.target.value);
+                        setIsEmailEmpty(false);
+                    }} />
+                </div>
+                {isEmailEmpty && <span className='text-red-500 text-xs flex justify-end'>*email is required</span>}
+
+                <div className="flex-column">
+                    <label>Password</label></div>
+                <div className="inputForm">
+                    <input placeholder="Enter your Password" className="input" type="password" onChange={(event) => {
+                        setPassword(event.target.value);
+                        setIsPasswordEmpty(false);
+                    }} />
+                </div>
+                {isPasswordEmpty && <span className='text-red-500 text-xs flex justify-end'>*password is required</span>}
+
+                <div className="flex-row">
+                    <div>
+                        <input type="checkbox" />
+                        <label className='ml-1'>Remember me</label>
+                    </div>
+                    <span className="span hidden">Forgot password?</span>
+                </div>
+                <button className="button-submit" onClick={(event) => {
+                    event.preventDefault();
+                    handleLogin();
+                }}>Sign Up</button>
+                <p className="p">Already have an account? <span className="span"><Link to='/signin' >Sign In</Link></span></p>
+            </form>
+        </>
     )
 }
 

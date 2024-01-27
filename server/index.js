@@ -13,7 +13,8 @@ const ApiRoutes = require('./src/routes/index');
 const setUpAndStartServer = async () => {
 
     const corsOptions = {
-        origin: ["https://canvas.kenil.in"], //included origin as true
+        origin: true, //included origin as true
+        // origin: ["https://canvas.kenil.in"], //included origin as true
         credentials: true, //included credentials as true
     };
 

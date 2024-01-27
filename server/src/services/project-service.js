@@ -1,8 +1,11 @@
-const { ProjectRepository } = require('../repository/index');
+const { StatusCodes } = require('http-status-codes');
+const { ProjectRepository, UserRepository } = require('../repository/index');
+const { ServiceError, ValidationError } = require('../utils/errors');
 
 class ProjectService {
     constructor() {
         this.projectRepository = new ProjectRepository();
+        this.userRepository = new UserRepository();
     }
 
     async createProject(title, description, userId) {
@@ -11,7 +14,8 @@ class ProjectService {
                 owner_id: userId,
                 project_name: title,
                 project_description: description,
-                members: [{ name: '', role: '' }],
+                members: [],
+
                 canvases: {
                     aeiou: {
                         environment: {
@@ -130,7 +134,9 @@ class ProjectService {
                 }
             }
 
-            const project = await this.projectRepository.createProject(projectDetail);
+            let project = await this.projectRepository.createProject(projectDetail);
+            project = project.toObject();
+            project.type = 'owner';
             return project;
         }
         catch (error) {
@@ -150,7 +156,8 @@ class ProjectService {
 
     async updateProject(updateProjectDetail) {
         try {
-            const updatedProject = await this.projectRepository.updateProject(updateProjectDetail);
+            const { type, ...updateProjectData } = updateProjectDetail;
+            const updatedProject = await this.projectRepository.updateProject(updateProjectData);
             return updatedProject;
         } catch (error) {
             throw error;
@@ -159,10 +166,134 @@ class ProjectService {
 
     async getProjects(userId) {
         try {
-            const projects = await this.projectRepository.getProjects(userId);
+            let projects = await this.projectRepository.getProjects(userId);
+            // console.log("Project - " + projects)
+            projects = projects.map(project => {
+                const plainObject = project.toObject();
+                plainObject.type = 'owner';
+                return plainObject;
+            });
+
+            let sharedProjects = await this.getSharedProjects(userId);
+            // console.log("Shared Project - " + sharedProjects)
+            sharedProjects = sharedProjects.map(project => {
+                const plainObject = project.toObject();
+                plainObject.type = 'shared';
+                return plainObject;
+            });
+
+            projects = projects.concat(sharedProjects);
+
+            return projects;
+        } catch (error) {
+            console.log("Service :", error)
+            throw error;
+        }
+    }
+
+    async myProjects(userId) {
+        try {
+            const projects = await this.projectRepository.myProjects(userId);
             return projects;
         } catch (error) {
             throw error;
+        }
+    }
+
+    async getOneProject(projectId) {
+        try {
+            const project = await this.projectRepository.getOneProject(projectId);
+            return project;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async getOneCanvas(projectId, canvasName) {
+        try {
+            const project = await this.projectRepository.getOneCanvas(projectId, canvasName);
+            return project;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async updateOneCanvas(projectId, canvasName, canvasData) {
+        try {
+            const project = await this.projectRepository.updateOneCanvas(projectId, canvasName, canvasData);
+            return project;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async giveAccess(ownerId, projectId, email) {
+        try {
+            const user = await this.userRepository.getByEmail(email);
+            console.log(user, email)
+            if (!user) {
+                throw new ValidationError({
+                    message: 'User not exist'
+                })
+            }
+            const response = await this.projectRepository.giveAccess(ownerId, projectId, email);
+            return response;
+        } catch (error) {
+            console.log("err - ", error)
+            if (error.name == 'RepositoryError' || error.name == 'ValidationError') {
+                throw error;
+            }
+            throw new ServiceError(
+                'Something went wrong while giving access',
+                'Something went wrong while giving access, try again later',
+                StatusCodes.INTERNAL_SERVER_ERROR
+            );
+        }
+    }
+
+    async removeAccess(ownerId, projectId, email) {
+        try {
+            const user = await this.userRepository.getByEmail(email);
+            if (!user) {
+                throw new ValidationError({
+                    message: 'User not exist'
+                })
+            }
+            const response = await this.projectRepository.removeAccess(ownerId, projectId, email);
+            return response;
+        } catch (error) {
+            console.log("err - ", error)
+            if (error.name == 'RepositoryError' || error.name == 'ValidationError') {
+                throw error;
+            }
+            throw new ServiceError(
+                'Something went wrong while removing access',
+                'Something went wrong while removing access, try again later',
+                StatusCodes.INTERNAL_SERVER_ERROR
+            );
+        }
+    }
+
+    async getSharedProjects(userId) {
+        try {
+            const user = await this.userRepository.getById(userId);
+            if (!user) {
+                throw new ValidationError({
+                    message: 'User not exist'
+                })
+            }
+            const accessedProjectsId = user.projectAccess;  // array of project id
+            const projects = await this.projectRepository.getSharedProjects(accessedProjectsId);
+            return projects;
+        } catch (error) {
+            if (error.name == 'RepositoryError' || error.name == 'ValidationError') {
+                throw error;
+            }
+            throw new ServiceError(
+                'Something went wrong while fetching shared projects',
+                'Something went wrong while fetching shared projects, try again later',
+                StatusCodes.INTERNAL_SERVER_ERROR
+            );
         }
     }
 }

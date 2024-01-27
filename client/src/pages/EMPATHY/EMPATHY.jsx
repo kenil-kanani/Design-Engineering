@@ -72,7 +72,6 @@ function EMPATHY() {
                             <div className='w-full flex flex-col'>
                                 <h2 className='font-bold text-[20px] text-center mt-2'>STORY BORDING</h2>
                                 <div className='w-full h-[150px] border-b-2'>
-
                                 </div>
                                 <div className='w-full h-[150px] border-b-2'>
 

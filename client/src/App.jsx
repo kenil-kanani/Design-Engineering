@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { checkAuthStatus } from './features/auth/authSlice';
 import { useNavigate } from 'react-router-dom';
 
+import { QueryClient, QueryClientProvider } from 'react-query'
+
 function App() {
 
     const dispatch = useDispatch();
@@ -15,19 +17,23 @@ function App() {
         dispatch(checkAuthStatus({ dispatch, navigate }))
     }, []);
 
+    const queryClient = new QueryClient()
+
     const isLoading = useSelector(state => state.authReducer.isLoading)
 
     return (
         <>
-            <ToastContainer />
-            {!isLoading ?
-                (<>
-                    <Navbar />
-                    <CustomRoutes />
-                </>)
-                :
-                (<LoadingMain />)
-            }
+            <QueryClientProvider client={queryClient}>
+                <ToastContainer />
+                {!isLoading ?
+                    (<>
+                        <Navbar />
+                        <CustomRoutes />
+                    </>)
+                    :
+                    (<LoadingMain />)
+                }
+            </QueryClientProvider>
         </>
     )
 }

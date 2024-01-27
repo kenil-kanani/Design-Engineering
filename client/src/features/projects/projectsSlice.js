@@ -12,8 +12,8 @@ export const fetchInitialProjects = createAsyncThunk("projects/fetchInitialProje
     try {
         if (localStorage.getItem("X-access-token") == null) throw new Error("Token not found");
         const response = await axios.get(
-            'https://de-4sy0.onrender.com/api/v1/getprojects',
-            // 'http://localhost:3030/api/v1/getprojects',
+            // 'https://de-4sy0.onrender.com/api/v1/getprojects',
+            'http://localhost:3030/api/v1/getprojects',
             {
                 headers: {
                     "Authorization": "Bearer " + localStorage.getItem("X-access-token")
@@ -32,8 +32,8 @@ export const createNewProject = createAsyncThunk("projects/createNewProject", as
     try {
         if (localStorage.getItem("X-access-token") == null) throw new Error("Token not found");
         const response = await axios.post(
-            'https://de-4sy0.onrender.com/api/v1/createproject',
-            // 'http://localhost:3030/api/v1/createproject',
+            // 'https://de-4sy0.onrender.com/api/v1/createproject',
+            'http://localhost:3030/api/v1/createproject',
             project,
             {
                 headers: {
@@ -41,7 +41,6 @@ export const createNewProject = createAsyncThunk("projects/createNewProject", as
                 }
             }
         );
-        console.log(response.data.data);
         return response.data.data;
     } catch (error) {
         console.log(error);
@@ -54,8 +53,8 @@ export const deleteProject = createAsyncThunk("projects/deleteProject", async (p
     try {
         if (localStorage.getItem("X-access-token") == null) throw new Error("Token not found");
         const response = await axios.post(
-            'https://de-4sy0.onrender.com/api/v1/deleteproject',
-            // 'http://localhost:3030/api/v1/deleteproject',
+            // 'https://de-4sy0.onrender.com/api/v1/deleteproject',
+            'http://localhost:3030/api/v1/deleteproject',
             { projectId },
             {
                 headers: {
@@ -78,8 +77,8 @@ export const updateProject = createAsyncThunk("projects/updateProject", async (p
         const { projectsReducer } = getState();
         const project = projectsReducer.projects.find(project => project._id === projectId);
         const response = await axios.post(
-            'https://de-4sy0.onrender.com/api/v1/updateproject',
-            // 'http://localhost:3030/api/v1/updateproject',
+            // 'https://de-4sy0.onrender.com/api/v1/updateproject',
+            'http://localhost:3030/api/v1/updateproject',
             project,
             {
                 headers: {
@@ -87,8 +86,54 @@ export const updateProject = createAsyncThunk("projects/updateProject", async (p
                 }
             }
         );
-        console.log(response.data.data)
         return response.data.data;
+    } catch (error) {
+        console.log(error);
+        return [];
+    }
+});
+
+// Async thunk to give access of a project to a user
+export const giveAccess = createAsyncThunk("projects/giveAccess", async (data) => {
+    try {
+        if (localStorage.getItem("X-access-token") == null) throw new Error("Token not found");
+        const response = await axios.post(
+            // 'https://de-4sy0.onrender.com/api/v1/updateproject',
+            'http://localhost:3030/api/v1/giveaccess',
+            {
+                projectId: data._id,
+                email: data.email
+            },
+            {
+                headers: {
+                    "Authorization": "Bearer " + localStorage.getItem("X-access-token")
+                }
+            }
+        );
+        return data;
+    } catch (error) {
+        console.log(error);
+        return [];
+    }
+});
+
+export const removeAccess = createAsyncThunk("projects/removeAccess", async (data) => {
+    try {
+        if (localStorage.getItem("X-access-token") == null) throw new Error("Token not found");
+        const response = await axios.post(
+            // 'https://de-4sy0.onrender.com/api/v1/updateproject',
+            'http://localhost:3030/api/v1/removeaccess',
+            {
+                projectId: data._id,
+                email: data.email
+            },
+            {
+                headers: {
+                    "Authorization": "Bearer " + localStorage.getItem("X-access-token")
+                }
+            }
+        );
+        return data;
     } catch (error) {
         console.log(error);
         return [];
@@ -239,6 +284,42 @@ const projectsSlice = createSlice({
         });
         builder.addCase(updateProject.rejected, (state) => {
             state.isLoading = false;
+        });
+
+        //* Manage Loading State for giveAccess
+        builder.addCase(giveAccess.pending, (state) => {
+            // state.isLoading = true;
+        });
+        builder.addCase(giveAccess.fulfilled, (state, action) => {
+            // state.isLoading = false;});
+            state.projects = state.projects.map(project => {
+                if (project._id === action.payload._id) {
+                    project.members.push(action.payload.email);
+                }
+                return project;
+            })
+            toast.success("Access Given Successfully");
+        });
+        builder.addCase(giveAccess.rejected, (state) => {
+            // state.isLoading = false;
+        });
+
+        //* Manage Loading State for removeAccess
+        builder.addCase(removeAccess.pending, (state) => {
+            // state.isLoading = true;
+        });
+        builder.addCase(removeAccess.fulfilled, (state, action) => {
+            // state.isLoading = false;
+            state.projects = state.projects.map(project => {
+                if (project._id === action.payload._id) {
+                    project.members = project.members.filter(member => member !== action.payload.email);
+                }
+                return project;
+            })
+            toast.success("Access Removed Successfully");
+        });
+        builder.addCase(removeAccess.rejected, (state) => {
+            // state.isLoading = false;
         });
     },
 });

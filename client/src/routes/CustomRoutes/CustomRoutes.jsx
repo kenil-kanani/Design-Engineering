@@ -1,5 +1,5 @@
 import React from 'react'
-import { Login, SignUp, Home, Contact, Verify, MyProfile, MyProjects, Project } from '../../pages/index'
+import { Login, SignUp, Home, Contact, Verify, MyProfile, MyProjects, SharedProjects, Project } from '../../pages/index'
 import { PrivateRoute, PublicRoutes } from '../index';
 import { Route, Routes, useParams } from "react-router-dom"
 import { AEIOU, EMPATHY } from '../../pages/index';
@@ -27,6 +27,11 @@ function CustomRoutes() {
             <Route path="/myprojects" element={
                 <PrivateRoute>
                     <MyProjects />
+                </PrivateRoute>
+            } />
+            <Route path="/sharedprojects" element={
+                <PrivateRoute>
+                    <SharedProjects />
                 </PrivateRoute>
             } />
             <Route path="/myprojects/:projectname" element={

@@ -56,6 +56,34 @@ router.get(
     ProjectController.getProjects
 )
 
+// new added
+
+router.get(
+    '/myprojects',
+    authenticateJwt,
+    ProjectController.myProjects
+)
+
+router.get(
+    '/project/:projectId',
+    authenticateJwt,
+    ProjectController.getOneProject
+)
+
+router.get(
+    '/project/:canvasname/:projectId',
+    authenticateJwt,
+    ProjectController.getOneCanvas
+)
+
+router.post(
+    '/project/:canvasname/:projectId',
+    authenticateJwt,
+    ProjectController.updateOneCanvas
+)
+
+
+// new added
 router.post(
     '/updateproject',
     authenticateJwt,
@@ -73,4 +101,23 @@ router.get(
     authenticateJwt,
     UserController.me
 )
+
+router.post(
+    '/giveaccess',
+    authenticateJwt,
+    ProjectController.giveAccess
+)
+
+router.post(
+    '/removeaccess',
+    authenticateJwt,
+    ProjectController.removeAccess
+)
+
+router.get(
+    '/getsharedprojects',
+    authenticateJwt,
+    ProjectController.getSharedProjects
+)
+
 module.exports = router;

@@ -12,7 +12,7 @@ const projectSchema = new mongoose.Schema({
     owner_id: String,
     project_name: String,
     project_description: String,
-    members: [{}], // Array of Objects
+    members: Array, // Array of Objects
     canvases: {
         aeiou: {
             environment: canvasDivisionSchema,

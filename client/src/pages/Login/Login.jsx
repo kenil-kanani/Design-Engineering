@@ -29,26 +29,21 @@ const LoginForm = () => {
         try {
             setIsVisible(true)
             const response = await signInApi(email, password)
-            if (response.success) {
-                setIsVisible(false)
-                toast.success(response.message)
-                localStorage.setItem('X-access-token', response.data)
-                dispatch(fetchInitialProjects())
-                dispatch(setIsAuthenticated(true))
-                dispatch(setUserData({ dispatch }))
-                navigate('/')
-            } else if (response.err.message === 'Not Verifyed Email') {
-                setIsVisible(false)
-                toast.error(response.message);
-                localStorage.setItem('X-access-token', response.err.explanation)
-                navigate('/verify');
-            } else {
-                setIsVisible(false)
-                toast.error(response.message);
-            }
-        } catch (error) {
             setIsVisible(false)
-            console.log("Catch", error)
+            toast.success(response.message)
+            localStorage.setItem('X-access-token', response.data)
+            dispatch(fetchInitialProjects())
+            dispatch(setIsAuthenticated(true))
+            dispatch(setUserData({ dispatch }))
+            navigate('/')
+        } catch (error) {
+            const { response } = error;
+            toast.error(response.data.message);
+            setIsVisible(false)
+            if (response.data.err.message == 'Not Verifyed Email') {
+                localStorage.setItem('X-access-token', response.data.err.explanation)
+                navigate('/verify');
+            }
         }
     };
 

@@ -24,10 +24,9 @@ class UserService {
             await sendMail(user.email, newJWT);
             return newJWT;
         } catch (error) {
-            if (error.name == 'RepositoryError') {
+            if (error.name == 'RepositoryError' || error.name == 'DuplicateEmailError') {
                 throw error;
             }
-            console.log(error);
             throw new ServiceError();
         }
     }
@@ -46,11 +45,10 @@ class UserService {
             }
             const passwordsMatch = this.checkPassword(plainPassword, user.password);
             //- step 2-> compare incoming plain password with stores encrypted password
-
             if (!passwordsMatch) {
                 throw new ValidationError(
                     {
-                        message: 'Incorrect Password',
+                        message: 'Incorrect Password - 1',
                         explanation: 'password not match , try again later'
                     }
                 );
@@ -78,12 +76,12 @@ class UserService {
         }
     }
 
-    async me(userId){
+    async me(userId) {
         try {
             const response = await this.userRepository.getById(userId);
-            return {email: response.email , status : response.status , name : response.name};
+            return { email: response.email, status: response.status, name: response.name };
         } catch (error) {
-            console.log("Service Error - " , error)
+            if (error.name == 'RepositoryError') throw error;
             throw ServiceError({
                 message: 'Not able to find user by mail',
                 explanation: 'Not able to find user, try againg later',
@@ -204,7 +202,10 @@ class UserService {
 
     checkPassword(userInputPlainPassword, encryptedPassword) {
         try {
-            return bcrypt.compareSync(userInputPlainPassword, encryptedPassword);
+            console.log("Plain Password : ", userInputPlainPassword)
+            console.log("Encrypted Password : ", encryptedPassword)
+            const response = bcrypt.compareSync(userInputPlainPassword, encryptedPassword);
+            return response;
         } catch (error) {
             throw ServiceError({
                 message: 'Not able to check password',

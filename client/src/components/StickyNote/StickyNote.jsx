@@ -1,45 +1,94 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { updateStickyData } from '../../features/projects/projectsSlice';
+// import React, { useState, useEffect, useMemo } from 'react';
 
-function StickyNote({ bgColor, width, height, projectId, canvasId, divId, stickyNoteIndex }) {
-    const dispatch = useDispatch();
+// function StickyNote({ bgColor, width, height, projectId, canvasId, divId, stickyNoteIndex, canvas, setCanvas }) {
+//     const stickyNoteData = canvas[divId].data[stickyNoteIndex]
+//     const style = {
+//         backgroundColor: bgColor,
+//     };
 
-    const project = useSelector(state => state.projectsReducer.projects.find(proj => proj._id === projectId));
-    const stickyNoteData = project.canvases[canvasId][divId].data[stickyNoteIndex];
+//     const handleChange = (event) => {
+//         setCanvas({
+//             ...canvas,
+//             [divId]: {
+//                 ...canvas[divId],
+//                 data: canvas[divId].data.map((data, index) => {
+//                     if (index === stickyNoteIndex) {
+//                         return event.target.value;
+//                     }
+//                     return data;
+//                 })
+//             }
+//         })
+//     };
+
+//     console.log("Note Render")
+
+//     return (
+//         <input
+//             type="text"
+//             value={stickyNoteData}
+//             onChange={handleChange}
+//             style={style}
+//             spellCheck="false"
+//             className={`${width} ${height} border-none rounded-lg px-2`}
+//         />
+//     );
+// }
+
+// export default (StickyNote)
+
+
+
+import React, { useState, useEffect, useMemo } from 'react';
+
+function StickyNote({ bgColor, width, height, projectId, canvasId, divId, stickyNoteIndex, canvas, setCanvas }) {
+    const stickyNoteData = canvas[divId].data[stickyNoteIndex];
     const style = {
         backgroundColor: bgColor,
     };
 
-    const [tempStickyInfo, setTempStickyInfo] = useState(stickyNoteData);
-    const [debouncedStickyInfo, setDebouncedStickyInfo] = useState(stickyNoteData);
+    // State to store the current input value
+    const [inputValue, setInputValue] = useState(stickyNoteData);
 
-    useEffect(() => {
-        const debounceTimeout = setTimeout(() => {
-            setDebouncedStickyInfo(tempStickyInfo);
-            dispatch(updateStickyData({
-                projectId,
-                canvasId,
-                divId,
-                stickyNoteIndex,
-                newData: tempStickyInfo,
-            }));
-        }, 1000); // Adjust the debounce time interval as needed (in milliseconds)
+    // Delay in milliseconds (2 seconds)
+    const delay = 500;
 
-        return () => {
-            clearTimeout(debounceTimeout);
+    // Debounced handleChange function
+    const debouncedHandleChange = useMemo(() => {
+        let timeoutId;
+
+        return (event) => {
+            setInputValue(event.target.value);
+
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(() => {
+                setCanvas((prevCanvas) => ({
+                    ...prevCanvas,
+                    [divId]: {
+                        ...prevCanvas[divId],
+                        data: prevCanvas[divId].data.map((data, index) => {
+                            if (index === stickyNoteIndex) {
+                                return event.target.value;
+                            }
+                            return data;
+                        }),
+                    },
+                }));
+            }, delay);
         };
-    }, [tempStickyInfo, dispatch, projectId, canvasId, divId, stickyNoteIndex]);
+    }, [divId, stickyNoteIndex, setCanvas]);
 
     const handleChange = (event) => {
-        const newStickyInfo = event.target.value;
-        setTempStickyInfo(newStickyInfo);
+        event.persist(); // Ensure that the event is not nullified by debounce
+        debouncedHandleChange(event);
     };
+
+    // console.log('Note Render');
 
     return (
         <input
             type="text"
-            value={tempStickyInfo}
+            value={inputValue}
             onChange={handleChange}
             style={style}
             spellCheck="false"

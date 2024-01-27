@@ -6,8 +6,8 @@ const isActivateAccount = async () => {
             const token = await localStorage.getItem('X-access-token');
 
             const response = await axios.get(
-                'https://de-4sy0.onrender.com/api/v1/isactivated',
-                // 'http://localhost:3030/api/v1/isactivated',
+                // 'https://de-4sy0.onrender.com/api/v1/isactivated',
+                'http://localhost:3030/api/v1/isactivated',
                 {
                     params:{
                         token

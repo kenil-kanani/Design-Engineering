@@ -5,11 +5,17 @@ const { StatusCodes } = require('http-status-codes');
 
 const authenticateJwt = (req, res, next) => {
     const authHeader = req.headers.authorization;
+    // if (!authHeader) {
+    //     // Handle the case when the authorization header is not present
+    //     return res.status(401).json({ message: 'Unauthorized' });
+    // }
     const token = authHeader.split(' ')[1];
+
+    // console.log("Token : ", token)
     if (token != "null") {
-        jwt.verify(token, JWT_KEY, (error , user)=> {
-            if(error) {
-                console.log("In Middelware error - " , error)
+        jwt.verify(token, JWT_KEY, (error, user) => {
+            if (error) {
+                console.log("In Middelware error - ", error)
                 return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
                     message: 'Invalid Token!!!',
                     data: {},
@@ -18,6 +24,7 @@ const authenticateJwt = (req, res, next) => {
                 });
             }
             req.user = user;
+            // console.log("User - " , user)
             next();
         });
     } else {

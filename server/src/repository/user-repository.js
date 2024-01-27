@@ -11,20 +11,30 @@ class UserRepository {
             console.log(user);
             return user;
         } catch (error) {
-            console.log("objecte" , error)
-            throw new AppError(
-                'RepositoryError',
-                'Not able to create new User',
-                'There was some issue with creating new User, try againg later',
-                StatusCodes.INTERNAL_SERVER_ERROR
-            );
+            console.log("user create err - ", error)
+            if (error.name === 'MongoServerError' && error.code === 11000) {
+                // Duplicate email error
+                throw new AppError(
+                    'DuplicateEmailError',
+                    'User with the same email already exists',
+                    'A user with the same email address already exists. Please use a different email address.',
+                    StatusCodes.CONFLICT
+                );
+            } else {
+                // Handle other errors
+                throw new AppError(
+                    'RepositoryError',
+                    'Not able to create new User',
+                    'There was some issue with creating a new User, try again later',
+                    StatusCodes.INTERNAL_SERVER_ERROR
+                );
+            }
         }
     }
 
     async getByEmail(userEmail) {
         try {
             const user = await UserModel.findOne({ email: userEmail });
-            console.log(user);
             return user;
         } catch (error) {
             throw new AppError(
@@ -37,7 +47,7 @@ class UserRepository {
     }
 
     async getById(userId) {
-        try {                                               
+        try {
             const user = await UserModel.findOne({ _id: userId });
             return user;
         } catch (error) {

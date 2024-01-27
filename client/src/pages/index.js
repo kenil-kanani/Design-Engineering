@@ -8,5 +8,6 @@ import MyProjects from './MyProjects/MyProjects';
 import Project from './Project/Project';
 import AEIOU from './AEIOU/AEIOU';
 import EMPATHY from './EMPATHY/EMPATHY';
+import SharedProjects from './SharedProjects/SharedProjects';
 
-export { Home, Login, SignUp, Contact, Verify, MyProfile, MyProjects, Project, AEIOU, EMPATHY };
+export { Home, Login, SignUp, Contact, Verify, MyProfile, MyProjects, SharedProjects, Project, AEIOU, EMPATHY };

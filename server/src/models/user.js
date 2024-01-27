@@ -22,7 +22,11 @@ const userSchema = new Schema({
         type: Boolean,
         default: false,
         required:[true , 'Status is required to validate new user']
-    }
+    },
+    projectAccess: {
+        type: Array,
+        default: []
+    },
 });
 
 userSchema.pre('save', async function () {

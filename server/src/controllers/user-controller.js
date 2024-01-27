@@ -1,4 +1,4 @@
-const UserService = require('../services/user-service');
+const UserService = require('../services/user-service.js');
 
 const userService = new UserService();
 
@@ -17,8 +17,8 @@ const createUser = async (req, res) => {
         })
     } catch (error) {
         console.log("Something went wrong in controller");
-        return res.status(500).json({
-            message: 'Something went wrong',
+        return res.status(error.statusCode).json({
+            message: error.message,
             data: {},
             success: false,
             err: error
@@ -29,7 +29,7 @@ const createUser = async (req, res) => {
 const signIn = async (req, res) => {
     try {
         const response = await userService.signIn(req.body.email, req.body.password);
-        res.cookie('token' , response,{ domain: 'localhost', path: '/' });
+        res.cookie('token', response, { domain: 'localhost', path: '/' });
         return res.status(201).json({
             success: true,
             message: 'Successfully signIn',
@@ -55,7 +55,7 @@ const signIn = async (req, res) => {
     }
 }
 
-const me = async (req,res) => {
+const me = async (req, res) => {
     const userId = req.user.id;
     try {
         const response = await userService.me(userId)
@@ -66,7 +66,7 @@ const me = async (req,res) => {
             err: {}
         })
     } catch (error) {
-        console.log("Controler Error - " , error)
+        console.log("Controler Error - ", error)
         return res.status(error.statusCode).json({
             message: 'Something went wrong',
             data: {},
