@@ -15,3 +15,32 @@ const getCanvasData = async ({ projectId, canvasName }) => {
 }
 
 export default getCanvasData;
+
+
+// canvas = {
+//     environment: {
+//         _id: "1234567890",
+//         stickyColor: "#ffffff",
+//         stickyNumber: 5,
+//         data: [
+//             "Sticky 1",
+//             "Sticky 2",
+//             "Sticky 3",
+//             "Sticky 4",
+//             "Sticky 5",
+//         ]
+//     },
+//     activity: {
+//         _id: "1234567891",
+//         stickyColor: "#ffffff",
+//         stickyNumber: 5,
+//         data: [
+//             "Sticky 1",
+//             "Sticky 2",
+//             "Sticky 3",
+//             "Sticky 4",
+//             "Sticky 5",
+//         ]
+//     },
+//     // .... so on
+// }

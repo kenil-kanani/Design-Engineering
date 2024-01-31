@@ -1,12 +1,11 @@
 import React from 'react'
 import { useLocation } from 'react-router-dom';
 import { CanvasCard } from '../../components';
-import { useDispatch } from 'react-redux'
 import { BsPatchPlusFill } from 'react-icons/bs';
 import { AiFillCloseCircle } from 'react-icons/ai';
-import { giveAccess, removeAccess } from '../../features/projects/projectsSlice'
-import { useQuery } from 'react-query';
-import { getProject } from '../../utils/projectApis';
+import { useMutation, useQuery } from 'react-query';
+import { getProject, giveProjectAccess, removeProjectAccess } from '../../utils/projectApis';
+import { toast } from 'react-toastify';
 
 
 function Project() {
@@ -17,13 +16,48 @@ function Project() {
     const searchParams = new URLSearchParams(location.search);
     const projectId = searchParams.get('id');
 
+    const [accessList, setAccessList] = React.useState([]);
+    const [project, setProject] = React.useState([]);
+
+    const { isLoading, isError, data, error } = useQuery({
+        queryKey: ['project-all'],
+        queryFn: () => getProject({ projectId }),
+        onSuccess: (data) => {
+            setAccessList(data.members);
+            setProject(data);
+        }
+    })
+
+
     function AddAccessForm() {
 
         const [email, setEmail] = React.useState('');
-        const [accessListLoading, setAccessListLoading] = React.useState(false);
-        const accessList = project.members;
+        // const [accessListLoading, setAccessListLoading] = React.useState(false);
 
-        const dispatch = useDispatch();
+        const giveAccessMutation = useMutation({
+            mutationKey: ['give-access'],
+            mutationFn: () => giveProjectAccess({ _id: project._id, email }),
+            onSuccess: () => {
+                setEmail('')
+                toast.success('Access given successfully!')
+                setAccessList([...accessList, email])
+            },
+            onError: (error) => {
+                toast.error(`Something went wrong: ${error.response.data.err.message}`)
+            }
+        })
+
+        const removeAccessMutation = useMutation({
+            mutationKey: ['remove-access'],
+            mutationFn: ({ email }) => removeProjectAccess({ _id: project._id, email }),
+            onSuccess: (data) => {
+                toast.success('Access removed successfully!')
+                setAccessList(accessList.filter((email) => email !== data.email))
+            },
+            onError: (error) => {
+                toast.error(`Something went wrong: ${error.response.data.err.message}`)
+            }
+        })
 
         return (
             <>
@@ -45,17 +79,20 @@ function Project() {
                             }}
                         />
                     </div>
-                    <button className='button-submit' onClick={(event) => {
-                        // setAccessListLoading(true);
-                        event.preventDefault();
-                        dispatch(giveAccess({ _id: project._id, email }))
-                        // setAccessListLoading(false);
-                    }}>Submit</button>
+                    <button
+                        onClick={(event) => {
+                            event.preventDefault();
+                            giveAccessMutation.mutate();
+                        }}
+                        className={`button-submit ${giveAccessMutation.isLoading && 'cursor-wait'}`}
+                        disabled={giveAccessMutation.isLoading}
+                    >
+                        {giveAccessMutation.isLoading ? 'Giving Access...' : 'Give Access'}
+                    </button>
                     <div>
                         <p className='text-sm text-gray-400 mb-3 text-center'>Note: The user will be able to view and edit the project.</p>
                         <div className="flex flex-col">
                             <label className="text-xl font-bold mb-2">Access List</label>
-
                             {
                                 accessList.length === 0 ? (
                                     <p className="text-gray-400">No one has access to this project yet.</p>
@@ -64,11 +101,15 @@ function Project() {
                                         {accessList.map((email) => (
                                             <li key={email} className="flex items-center justify-between space-x-2 mb-2">
                                                 <span>{email}</span>
-                                                <button className="px-2 py-1 bg-red-500 text-white rounded" onClick={(event) => {
-                                                    event.preventDefault();
-                                                    dispatch(removeAccess({ _id: project._id, email }))
-                                                }}>
-                                                    Remove Access
+                                                <button
+                                                    className={`px-2 py-1 bg-red-500 text-white rounded ${giveAccessMutation.isLoading && 'cursor-wait'}`}
+                                                    onClick={(event) => {
+                                                        event.preventDefault();
+                                                        removeAccessMutation.mutate({ email });
+                                                    }}
+                                                    disabled={removeAccessMutation.isLoading}
+                                                >
+                                                    {removeAccessMutation.isLoading ? 'Removing...' : 'Remove'}
                                                 </button>
                                             </li>
                                         ))}
@@ -83,10 +124,7 @@ function Project() {
         )
     }
 
-    const { isLoading, isError, data, error } = useQuery({
-        queryKey: ['project-all'],
-        queryFn: () => getProject({ projectId }),
-    })
+
 
     if (isLoading) return (
         <div className='flex w-screen h-screen justify-center items-center'>
@@ -102,7 +140,7 @@ function Project() {
     )
 
 
-    const project = data;
+    // const project = data;
 
 
     return (

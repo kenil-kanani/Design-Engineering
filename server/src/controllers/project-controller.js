@@ -24,7 +24,7 @@ const createProject = async (req, res) => {
 
 const deleteProject = async (req, res) => {
     try {
-        const response = await projectService.deleteProject(req.body.projectId);
+        const response = await projectService.deleteProject(req.body.projectId, req.user.id);
         return res.status(201).json({
             success: true,
             message: 'Successfully deleted a project',
@@ -32,8 +32,8 @@ const deleteProject = async (req, res) => {
             err: {}
         });
     } catch (error) {
-        console.log(error)
-        return res.status(500).json({
+        // console.log(error)
+        return res.status(400).json({
             message: 'Something went while deleting project',
             data: {},
             success: false,

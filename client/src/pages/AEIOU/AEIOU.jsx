@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { ProjectNotFound, StickyDiv } from '../../components';
 import { useLocation } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux'
 import { ShimmerAEIOU } from '../../shimmerui/index'
 import { useQuery, useMutation } from 'react-query';
 import { toast } from "react-toastify";
@@ -16,9 +15,6 @@ function AEIOU() {
     const [canvas, setCanvas] = useState(null);
 
 
-    const dispatch = useDispatch();
-
-
     const { isLoading, isError, error } = useQuery({
         queryKey: ['project-aeiou-get'],
         queryFn: () => getCanvasData({ projectId, canvasName: 'aeiou' }),
@@ -26,6 +22,7 @@ function AEIOU() {
         onSuccess: (data) => setCanvas(data)
     })
 
+    
 
     const mutation = useMutation(
         {
@@ -64,7 +61,15 @@ function AEIOU() {
                 {/* // - Canvas */}
                 <div className='h-[700px] w-[1254px] border-2  flex-col box-border'>
                     {/* // - First Row Start*/}
-                    <div className='h-[99px] w-[1252px] border-b-[2px] box-border'></div>
+                    <div className='h-[99px] w-[1252px] border-b-[2px] box-border flex justify-around'>
+                        <h1 className='my-auto font-bold text-[30px]'>AEIOU Summary:</h1>
+                        <div className='my-auto flex flex-col gap-2'>
+                            <p>Group ID:</p>
+                            <p>Domain Name:</p>
+                        </div>
+                        <p className='my-auto'>Date:</p>
+                        <p className='my-auto'>Version:</p>
+                    </div>
                     {/* // - First Row End*/}
 
                     {/* // - Second Row Start */}

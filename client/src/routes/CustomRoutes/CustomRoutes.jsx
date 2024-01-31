@@ -1,5 +1,5 @@
 import React from 'react'
-import { Login, SignUp, Home, Contact, Verify, MyProfile, MyProjects, SharedProjects, Project } from '../../pages/index'
+import { Login, SignUp, Home, Contact, Verify, MyProfile, MyProjects, SharedProjects, Project, IDEATION } from '../../pages/index'
 import { PrivateRoute, PublicRoutes } from '../index';
 import { Route, Routes, useParams } from "react-router-dom"
 import { AEIOU, EMPATHY } from '../../pages/index';
@@ -60,7 +60,11 @@ function Canvases() {
         return <AEIOU />;
     } else if (canvasname === 'empathy') {
         return <EMPATHY />;
-    } else {
+    } else if (canvasname === 'ideation') {
+        return <IDEATION />;
+    }
+
+    else {
         return <>Nothing</>
     }
 }

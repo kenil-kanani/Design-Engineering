@@ -20,18 +20,30 @@ class ProjectRepository {
         }
     }
 
-    async deleteProject(projectId) {
+    async deleteProject(projectId, userId) {
         try {
+            const project = await ProjectModel.findOne({ _id: projectId });
+            if (!project) {
+                throw new AppError(
+                    'RepositoryError',
+                    'Project not exist',
+                    'Something went wrong with deleting user project , come back again',
+                    StatusCodes.INTERNAL_SERVER_ERROR
+                )
+            }
+            if (project.owner_id != userId) {
+                throw new AppError(
+                    'RepositoryError',
+                    'Not allowed',
+                    'You are not allowed to delete this project',
+                    StatusCodes.UNAUTHORIZED
+                )
+            }
             await ProjectModel.deleteOne({ _id: projectId });
             return projectId;
         } catch (error) {
-            console.log("Error Repo : ", error)
-            throw new AppError(
-                'RepositoryError',
-                'Not able to delete Project',
-                'Something went wrong with deleting user project , come back again',
-                StatusCodes.INTERNAL_SERVER_ERROR
-            )
+            // console.log("Error Repo : ", error)
+            throw error
         }
     }
 
@@ -133,13 +145,20 @@ class ProjectRepository {
     async getSharedProjects(accessedProjectsId) {  // accessedProjectsId is array of project id
         try {
             let sharedProjects = [];
+            let projectIdThatToBeNeededDeleted = [];
             for (let i = 0; i < accessedProjectsId.length; i++) {
+                console.log("id : ", accessedProjectsId[i])
                 const project = await ProjectModel.findOne({ _id: accessedProjectsId[i] });
-                sharedProjects.push(project);
+                if (project) {
+                    sharedProjects.push(project);
+                } else {
+                    projectIdThatToBeNeededDeleted.push(accessedProjectsId[i])
+                }
             }
-            return sharedProjects;
+            // console.log("Shared Project Data : ", sharedProjects)
+            return { sharedProjects, projectIdThatToBeNeededDeleted };
         } catch (error) {
-            console.log(error)
+            console.log("Repo Error : ", error)
             throw new AppError(
                 'RepositoryError',
                 'Not able to get shared projects',
@@ -152,7 +171,7 @@ class ProjectRepository {
     async giveAccess(ownerId, projectId, email) {
         try {
             const project = await ProjectModel.findOne({ _id: projectId });
-            console.log(project, "project")
+            // console.log(project, "project")
             const user = await UserModel.findOne({ email: email });
             if (!project) {
                 throw new AppError(
@@ -167,6 +186,14 @@ class ProjectRepository {
                     'RepositoryError',
                     'Not allowed',
                     'You are not allowed to give access to this project',
+                    StatusCodes.INTERNAL_SERVER_ERROR
+                )
+            }
+            if (user.projectAccess.includes(projectId)) {
+                throw new AppError(
+                    'RepositoryError',
+                    'Already have access',
+                    'User already have access to this project',
                     StatusCodes.INTERNAL_SERVER_ERROR
                 )
             }

@@ -4,6 +4,9 @@ import getProject from "./getProject";
 import getMyProjects from "./getMyProjects";
 import createNewProject from "./createNewProject";
 import deleteProject from "./deleteProject";
+import getSharedProject from "./getSharedProject";
+import giveProjectAccess from "./giveProjectAccess";
+import removeProjectAccess from "./removeProjectAccess";
 
 export {
     getCanvasData,
@@ -11,5 +14,8 @@ export {
     getProject,
     getMyProjects,
     createNewProject,
-    deleteProject
+    deleteProject,
+    getSharedProject,
+    giveProjectAccess,
+    removeProjectAccess
 }

@@ -30,7 +30,12 @@ const projectSchema = new mongoose.Schema({
                 sad: [],
             }
         },
-        ideation: canvasDivisionSchema,
+        ideation: {
+            people: canvasDivisionSchema,
+            activities: canvasDivisionSchema,
+            situation_context_location: canvasDivisionSchema,
+            props_tools_objects_equipment: canvasDivisionSchema,
+        },
         productdevelopment: canvasDivisionSchema,
         businessmodel: canvasDivisionSchema,
         lnm: canvasDivisionSchema,

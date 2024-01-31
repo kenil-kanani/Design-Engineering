@@ -43,12 +43,12 @@ class UserService {
                     }
                 );
             }
-            const passwordsMatch = this.checkPassword(plainPassword, user.password);
+            const passwordsMatch = user.isValidPassword(plainPassword);
             //- step 2-> compare incoming plain password with stores encrypted password
             if (!passwordsMatch) {
                 throw new ValidationError(
                     {
-                        message: 'Incorrect Password - 1',
+                        message: 'Incorrect Password - 2',
                         explanation: 'password not match , try again later'
                     }
                 );

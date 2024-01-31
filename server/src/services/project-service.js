@@ -144,10 +144,10 @@ class ProjectService {
         }
     }
 
-    async deleteProject(projectId) {
+    async deleteProject(projectId, userId) {
         try {
-            console.log(projectId)
-            const deletedProject = await this.projectRepository.deleteProject(projectId);
+            // console.log(projectId)
+            const deletedProject = await this.projectRepository.deleteProject(projectId, userId);
             return deletedProject;
         } catch (error) {
             throw error;
@@ -230,7 +230,7 @@ class ProjectService {
     async giveAccess(ownerId, projectId, email) {
         try {
             const user = await this.userRepository.getByEmail(email);
-            console.log(user, email)
+            // console.log(user, email)
             if (!user) {
                 throw new ValidationError({
                     message: 'User not exist'
@@ -253,6 +253,7 @@ class ProjectService {
 
     async removeAccess(ownerId, projectId, email) {
         try {
+            console.log("Email : ", email)
             const user = await this.userRepository.getByEmail(email);
             if (!user) {
                 throw new ValidationError({
@@ -283,9 +284,15 @@ class ProjectService {
                 })
             }
             const accessedProjectsId = user.projectAccess;  // array of project id
-            const projects = await this.projectRepository.getSharedProjects(accessedProjectsId);
-            return projects;
+            const { sharedProjects, projectIdThatToBeNeededDeleted } = await this.projectRepository.getSharedProjects(accessedProjectsId);
+
+            if (projectIdThatToBeNeededDeleted.length > 0) {
+                user.projectAccess = user.projectAccess.filter(projectId => !projectIdThatToBeNeededDeleted.includes(projectId));
+                await user.save();
+            }
+            return sharedProjects;
         } catch (error) {
+            console.log("Error - ", error)
             if (error.name == 'RepositoryError' || error.name == 'ValidationError') {
                 throw error;
             }

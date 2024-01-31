@@ -9,13 +9,14 @@ const signInApi = async (email, password) => {
                 email,
                 password,
             },
-            {
-                withCredentials: true,
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            }
+            // {
+            // withCredentials: true,
+            // headers: {
+            // "Content-Type": "application/json",
+            // },
+            // }
         );
+        // console.log("Response : ", response.data)
         return response.data;
     } catch (error) {
         throw error;

@@ -83,7 +83,7 @@ function StickyNote({ bgColor, width, height, projectId, canvasId, divId, sticky
         debouncedHandleChange(event);
     };
 
-    // console.log('Note Render');
+    console.log('Note Render');
 
     return (
         <input
