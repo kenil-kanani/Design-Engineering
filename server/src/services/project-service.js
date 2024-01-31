@@ -130,6 +130,60 @@ class ProjectService {
                             sad1: "Sad Story Likhni Hai , Bhai",
                             sad2: "Sad Story Likhni Hai , Bhai",
                         },
+                    },
+                    ideation: {
+                        people: {
+                            stickyCount: 4,
+                            stickyColor: "#64B5F6",
+                            data: [
+                                "People-1",
+                                "People-2",
+                                "People-3",
+                                "People-4",
+                                "People-5",
+                                "People-6",
+                                "People-7",
+                            ]
+                        },
+                        activities: {
+                            stickyCount: 4,
+                            stickyColor: "#FFB74D",
+                            data: [
+                                "Activities-1",
+                                "Activities-2",
+                                "Activities-3",
+                                "Activities-4",
+                                "Activities-5",
+                                "Activities-6",
+                                "Activities-7",
+                            ]
+                        },
+                        situation_context_location: {
+                            stickyCount: 4,
+                            stickyColor: "#81C784",
+                            data: [
+                                "Situation-1",
+                                "Situation-2",
+                                "Situation-3",
+                                "Situation-4",
+                                "Situation-5",
+                                "Situation-6",
+                                "Situation-7",
+                            ]
+                        },
+                        props_tools_objects_equipment: {
+                            stickyCount: 4,
+                            stickyColor: "#E57373",
+                            data: [
+                                "Props-1",
+                                "Props-2",
+                                "Props-3",
+                                "Props-4",
+                                "Props-5",
+                                "Props-6",
+                                "Props-7",
+                            ]
+                        },
                     }
                 }
             }

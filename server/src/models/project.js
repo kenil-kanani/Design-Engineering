@@ -25,10 +25,7 @@ const projectSchema = new mongoose.Schema({
             user: canvasDivisionSchema,
             stackholder: canvasDivisionSchema,
             activity: canvasDivisionSchema,
-            storybording: {
-                happy: [],
-                sad: [],
-            }
+            storyboarding: {}
         },
         ideation: {
             people: canvasDivisionSchema,

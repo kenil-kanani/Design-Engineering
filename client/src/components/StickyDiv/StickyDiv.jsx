@@ -3,7 +3,7 @@ import { StickyNote } from '../index';
 import { FaEdit } from 'react-icons/fa';
 import { AiOutlineClose } from 'react-icons/ai';
 
-function StickyDiv({ width, height, canvasId, divId, divName, projectId, canvas, setCanvas }) {
+function StickyDiv({ width, height, canvasId, divId, divName, projectId, canvas, setCanvas, maxStickyCount = 6 }) {
     const [isFeatureVisible, setIsFeatureVisible] = useState(false);
     const stickyCount = canvas[divId].stickyCount;
     const bgColor = canvas[divId].stickyColor;
@@ -50,7 +50,11 @@ function StickyDiv({ width, height, canvasId, divId, divName, projectId, canvas,
                         <label>Sticky Notes : </label>
                         <input
                             onChange={(e) => {
-                                setCanvas({ ...canvas, [divId]: { ...canvas[divId], stickyCount: e.target.value } });
+                                let value = e.target.value;
+                                if (e.target.value > 6) value = 6;
+                                if (e.target.value < 0) value = 0;
+                                if (e.target.value > maxStickyCount) value = maxStickyCount;
+                                setCanvas({ ...canvas, [divId]: { ...canvas[divId], stickyCount: value } });
                             }}
                             value={stickyCount}
                             type='number'

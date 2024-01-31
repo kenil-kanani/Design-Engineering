@@ -10,7 +10,7 @@ const getCanvasData = async ({ projectId, canvasName }) => {
             }
         }
     );
-    // console.log("Response : ", response.data.data)
+    console.log("Response : ", response.data.data)
     return response.data.data;
 }
 
