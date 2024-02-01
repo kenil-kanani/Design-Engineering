@@ -1,12 +1,11 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import './Login.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { Loader } from '../../components/index';
 import { signInApi } from '../../apis';
 import { useDispatch } from 'react-redux';
-import { setIsAuthenticated, setUserData } from '../../features/auth/authSlice';
+import { setIsAuthenticated } from '../../features/auth/authSlice';
 import { toast } from 'react-toastify';
-import { fetchInitialProjects } from '../../features/projects/projectsSlice';
 
 const LoginForm = () => {
 
@@ -32,9 +31,7 @@ const LoginForm = () => {
             setIsVisible(false)
             toast.success(response.message)
             localStorage.setItem('X-access-token', response.data)
-            dispatch(fetchInitialProjects())
             dispatch(setIsAuthenticated(true))
-            dispatch(setUserData({ dispatch }))
             navigate('/')
         } catch (error) {
             const { response } = error;

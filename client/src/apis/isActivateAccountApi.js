@@ -6,10 +6,9 @@ const isActivateAccount = async () => {
             const token = await localStorage.getItem('X-access-token');
 
             const response = await axios.get(
-                // 'https://de-4sy0.onrender.com/api/v1/isactivated',
-                'http://localhost:3030/api/v1/isactivated',
+                `${import.meta.env.VITE_SERVER_URL}/api/v1/isactivated`,
                 {
-                    params:{
+                    params: {
                         token
                     }
                 },

@@ -15,7 +15,6 @@ class ProjectService {
                 project_name: title,
                 project_description: description,
                 members: [],
-
                 canvases: {
                     aeiou: {
                         environment: {
@@ -184,6 +183,123 @@ class ProjectService {
                                 "Props-7",
                             ]
                         },
+                    },
+                    productdevelopment: {
+                        purpose: {
+                            stickyCount: 4,
+                            stickyColor: "#64B5F6",
+                            data: [
+                                "Purpose-1",
+                                "Purpose-2",
+                                "Purpose-3",
+                                "Purpose-4",
+                                "Purpose-5",
+                                "Purpose-6",
+                                "Purpose-7",
+                            ]
+                        },
+                        people: {
+                            stickyCount: 4,
+                            stickyColor: "#FFB74D",
+                            data: [
+                                "People-1",
+                                "People-2",
+                                "People-3",
+                                "People-4",
+                                "People-5",
+                                "People-6",
+                                "People-7",
+                            ]
+                        },
+                        product_experience: {
+                            stickyCount: 4,
+                            stickyColor: "#81C784",
+                            data: [
+                                "Product-1",
+                                "Product-2",
+                                "Product-3",
+                                "Product-4",
+                                "Product-5",
+                                "Product-6",
+                                "Product-7",
+                            ]
+                        },
+                        product_functions: {
+                            stickyCount: 4,
+                            stickyColor: "#E57373",
+                            data: [
+                                "Functions-1",
+                                "Functions-2",
+                                "Functions-3",
+                                "Functions-4",
+                                "Functions-5",
+                                "Functions-6",
+                                "Functions-7",
+                            ]
+                        },
+                        product_features: {
+                            stickyCount: 4,
+                            stickyColor: "#BA68C8",
+                            data: [
+                                "Features-1",
+                                "Features-2",
+                                "Features-3",
+                                "Features-4",
+                                "Features-5",
+                                "Features-6",
+                                "Features-7",
+                            ]
+                        },
+                        components: {
+                            stickyCount: 4,
+                            stickyColor: "#E57373",
+                            data: [
+                                "Components-1",
+                                "Components-2",
+                                "Components-3",
+                                "Components-4",
+                                "Components-5",
+                                "Components-6",
+                                "Components-7",
+                            ]
+                        },
+                        customer_revalidation: {
+                            stickyCount: 4,
+                            stickyColor: "#BA68C8",
+                            data: [
+                                "Customer-1",
+                                "Customer-2",
+                                "Customer-3",
+                                "Customer-4",
+                                "Customer-5",
+                                "Customer-6",
+                                "Customer-7",
+                            ]
+                        },
+                        reject_redesign_retain: {
+                            stickyCount: 4,
+                            stickyColor: "#E57373",
+                            data: [
+                                "Reject-1",
+                                "Reject-2",
+                                "Reject-3",
+                                "Reject-4",
+                                "Reject-5",
+                                "Reject-6",
+                                "Reject-7",
+                            ]
+                        }
+                    },
+                    businessmodel: {
+                        key_partners: "key_partners",
+                        key_activities: "key_activities",
+                        key_resources: "key_resources",
+                        value_proposition: "value_proposition",
+                        customer_relationships: "customer_relationships",
+                        channels: "channels",
+                        customer_segments: "customer_segments",
+                        cost_structure: "cost_structure",
+                        revenue_streams: "revenue_streams",
                     }
                 }
             }

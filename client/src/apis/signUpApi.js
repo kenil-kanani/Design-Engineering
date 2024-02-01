@@ -3,8 +3,7 @@ import axios from 'axios';
 const signUpApi = async (name, email, password) => {
     try {
         const response = await axios.post(
-            // 'https://de-4sy0.onrender.com/api/v1/signup',
-            'http://localhost:3030/api/v1/signup',
+            `${import.meta.env.VITE_SERVER_URL}api/v1/signup`,
             {
                 name,
                 email,

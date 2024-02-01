@@ -1,5 +1,5 @@
 import React from 'react'
-import { Login, SignUp, Home, Contact, Verify, MyProfile, MyProjects, SharedProjects, Project, IDEATION } from '../../pages/index'
+import { Login, SignUp, Home, Contact, Verify, MyProfile, MyProjects, SharedProjects, Project, IDEATION, PRODUCTDEVELOPMENT, BUSINESSMODEL, LNM } from '../../pages/index'
 import { PrivateRoute, PublicRoutes } from '../index';
 import { Route, Routes, useParams } from "react-router-dom"
 import { AEIOU, EMPATHY } from '../../pages/index';
@@ -62,6 +62,12 @@ function Canvases() {
         return <EMPATHY />;
     } else if (canvasname === 'ideation') {
         return <IDEATION />;
+    } else if (canvasname === 'product-development') {
+        return <PRODUCTDEVELOPMENT />
+    } else if (canvasname === 'business-model') {
+        return <BUSINESSMODEL />
+    } else if (canvasname === 'lnm') {
+        return <LNM />
     }
 
     else {
