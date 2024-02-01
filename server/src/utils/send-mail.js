@@ -1,5 +1,5 @@
 const nodemailer = require('nodemailer');
-const { EMAIL_ID, EMAIL_PASSWORD } = require('../config/serverConfig.js');
+const { EMAIL_ID, EMAIL_PASSWORD, SERVER_URL } = require('../config/serverConfig.js');
 
 function sendMail(userEmail, token) {
     //- Create a transporter with  Gmail account credentials
@@ -10,9 +10,7 @@ function sendMail(userEmail, token) {
             pass: EMAIL_PASSWORD
         }
     });
-
-    // token = "https://de-4sy0.onrender.com/api/v1/verify?token=" + token;
-    token = "http://localhost:3030/api/v1/verify?token=" + token;
+    token = `${SERVER_URL}/api/v1/verify?token=` + token;
     //- Define the email options
     const mailOptions = {
         from: 'noreply.hezalt@gmail.com',

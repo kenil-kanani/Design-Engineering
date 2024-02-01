@@ -14,6 +14,18 @@ class UserService {
 
     async createUser(userDetail) {
         try {
+
+            let { email } = userDetail;
+            let arr = email.split('@');
+            if (arr[1] != 'gecbhavnagar.gujgov.edu.in') {
+                throw new ValidationError(
+                    {
+                        message: 'Allowed Only University Email',
+                        explanation: 'Email not match , try again later'
+                    }
+                );
+            }
+
             const user = await this.userRepository.createUser(
                 {
                     ...userDetail,

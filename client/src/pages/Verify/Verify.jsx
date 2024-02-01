@@ -21,7 +21,7 @@ const Verify = () => {
 
     const handleResendEmail = async () => {
         try {
-            // await resendVerificationEmailApi();
+            await resendVerificationEmailApi();
             setVerificationSent(true);
         } catch (error) {
             console.error('Error sending verification email:', error);
