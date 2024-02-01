@@ -6,7 +6,7 @@ import './Verify.css'
 const Verify = () => {
 
     useEffect(() => {
-        setInterval(async () => {
+        async () => {
             const response = await isActivateAccount();
             if (response.data) {
                 window.location.href = "/";
@@ -14,7 +14,7 @@ const Verify = () => {
             if (localStorage.getItem('X-access-token') === null) {
                 window.location.href = "/signin";
             }
-        }, 2000);
+        }
     }, []);
 
     const [verificationSent, setVerificationSent] = useState(false);
