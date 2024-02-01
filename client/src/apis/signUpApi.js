@@ -3,7 +3,7 @@ import axios from 'axios';
 const signUpApi = async (name, email, password) => {
     try {
         const response = await axios.post(
-            `${import.meta.env.VITE_SERVER_URL}api/v1/signup`,
+            `${import.meta.env.VITE_SERVER_URL}/api/v1/signup`,
             {
                 name,
                 email,

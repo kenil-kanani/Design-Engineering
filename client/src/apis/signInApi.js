@@ -3,7 +3,7 @@ import axios from 'axios';
 const signInApi = async (email, password) => {
     try {
         const response = await axios.post(
-            `${import.meta.env.VITE_SERVER_URL}api/v1/signin`,
+            `${import.meta.env.VITE_SERVER_URL}/api/v1/signin`,
             {
                 email,
                 password,
