@@ -3,7 +3,7 @@ import axios from "axios";
 const deleteProject = async (projectId) => {
     if (localStorage.getItem("X-access-token") == null) throw new Error("Token not found");
     const response = await axios.post(
-        `${import.meta.env.VITE_SERVER_URL}/v1/deleteproject`,
+        `${import.meta.env.VITE_SERVER_URL}/api/v1/deleteproject`,
         projectId,
         {
             headers: {
