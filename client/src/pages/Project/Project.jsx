@@ -6,12 +6,12 @@ import { AiFillCloseCircle } from 'react-icons/ai';
 import { useMutation, useQuery } from 'react-query';
 import { getProject, giveProjectAccess, removeProjectAccess } from '../../utils/projectApis';
 import { toast } from 'react-toastify';
+import BackButton from '../../components/BackButton/BackButton.jsx';
 
 
 function Project() {
 
     const [isAccessFormVisible, setIsAccessFormVisible] = React.useState(false);
-
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const projectId = searchParams.get('id');
@@ -144,14 +144,21 @@ function Project() {
 
 
     return (
+
         !project ? (
             <div className='w-screen h-screen flex flex-col justify-center items-center'>
+                <div className='absolute top-20 left-0'>
+                    <BackButton backPath={'/'} />
+                </div>
                 <p className='text-4xl font-bold text-gray-600'>Project Not Found</p>
                 <p className='text-lg text-gray-400'>The requested project does not exist.</p>
             </div>
         ) : (
             <>
                 <div className='w-screen h-screen flex justify-center flex-wrap'>
+                    <div className='absolute top-20 left-0'>
+                        <BackButton backPath={'/'} />
+                    </div>
                     <CanvasCard projectId={projectId} canvasName={"AEIOU"} />
                     <CanvasCard projectId={projectId} canvasName={"Empathy"} />
                     <CanvasCard projectId={projectId} canvasName={"Ideation"} />

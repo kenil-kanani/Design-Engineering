@@ -1,18 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ProjectCard } from '../../components/index';
 import { BsPatchPlusFill } from 'react-icons/bs';
 import { AiFillCloseCircle } from 'react-icons/ai';
 import { SProjectCard } from '../../shimmerui/index'
 import { useMutation, useQuery } from 'react-query';
-import { createNewProject, getMyProjects } from '../../utils/projectApis';
+import { createNewProject, deleteProject, getMyProjects } from '../../utils/projectApis';
 import { toast } from "react-toastify";
+import { Link } from 'react-router-dom';
+import BackButton from '../../components/BackButton/BackButton';
 
 function MyProjects() {
 
-    const [isProjectFormVisible, setIsProjectFormVisible] = React.useState(false);
-    const [projects, setProjects] = React.useState([]);
+    const [isProjectFormVisible, setIsProjectFormVisible] = useState(false);
+    const [projects, setProjects] = useState([]);
+    const [addProjectLoading, setAddProjectLoading] = useState(false);
 
-    function AddProjectForm() {
+    function AddProjectForm({ setAddProjectLoading }) {
 
         const [projectName, setProjectName] = React.useState('');
         const [projectDescription, setProjectDescription] = React.useState('');
@@ -22,9 +25,13 @@ function MyProjects() {
             mutationFn: () => createNewProject({ projectName, projectDescription }),
             onSuccess: (data) => {
                 toast.success("Project Created Successfully")
+                setAddProjectLoading(false)
                 setProjects([...projects, { project_name: data.project_name, project_description: data.project_description, _id: data._id }])
             },
-            onError: (error) => toast.error(`Something went wrong: ${error.message}`),
+            onError: (error) => {
+                setAddProjectLoading(false)
+                toast.error(`Something went wrong: ${error.message}`)
+            },
         })
 
         return (
@@ -68,12 +75,30 @@ function MyProjects() {
                     <button className='button-submit' onClick={(event) => {
                         event.preventDefault();
                         setIsProjectFormVisible(false);
+                        setAddProjectLoading(true)
                         mutation.mutate();
                     }}>Create Project</button>
                 </form >
             </>
         )
     }
+
+    let projectId = ''
+    function setProjectId(id) {
+        projectId = id
+    }
+
+    const mutation = useMutation({
+        mutationKey: ['project-delete'],
+        mutationFn: () => deleteProject({ projectId }),
+        onSuccess: () => {
+            setProjects((prev) => prev.filter((project) => project._id !== projectId));
+            toast.success("Project Deleted Successfully")
+        },
+        onError: (error) => {
+            toast.error(`Something went wrong: ${error.response.data.err.message}`)
+        }
+    })
 
     const { isLoading, isError, data, error } = useQuery({
         queryKey: 'myprojects',
@@ -82,7 +107,7 @@ function MyProjects() {
         staleTime: Infinity,
     })
 
-    if (isLoading) return (
+    if (isLoading || mutation.isLoading || addProjectLoading) return (
         <div className='flex w-screen h-screen justify-center items-center flex-wrap'>
             {
                 [1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
@@ -104,6 +129,9 @@ function MyProjects() {
 
     return (
         <>
+            <div className='absolute top-20 left-0'>
+                <BackButton backPath={'/'} />
+            </div>
             {projects.length === 0 ? (
                 <div className='w-screen h-screen flex flex-col justify-center items-center'>
                     <p className='text-4xl font-bold text-gray-600'>Oops, No projects available!</p>
@@ -113,7 +141,7 @@ function MyProjects() {
             ) : (
                 <div className='w-screen h-screen flex justify-center flex-wrap'>
                     {projects.map(project => (
-                        <ProjectCard key={project._id} title={project.project_name} description={project.project_description} projectId={project._id} setProjects={setProjects} />
+                        <ProjectCard key={project._id} title={project.project_name} description={project.project_description} projectId={project._id} setProjects={setProjects} mutation={mutation} setProjectId={setProjectId} />
                     ))}
                 </div >
             )
@@ -121,7 +149,7 @@ function MyProjects() {
             {
                 isProjectFormVisible &&
                 <div className='absolute top-0 left-0 w-screen h-screen bg-black bg-opacity-50 flex justify-center items-center mt-[70px]'>
-                    <AddProjectForm />
+                    <AddProjectForm setAddProjectLoading={setAddProjectLoading} />
                 </div>
             }
             <button

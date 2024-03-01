@@ -4,6 +4,8 @@ import { useSelector } from 'react-redux'
 import { SProjectCard } from '../../shimmerui/index'
 import { useQuery } from 'react-query';
 import { getSharedProject } from '../../utils/projectApis';
+import { Link } from 'react-router-dom';
+import BackButton from '../../components/BackButton/BackButton';
 
 function SharedProjects() {
 
@@ -34,6 +36,9 @@ function SharedProjects() {
 
     return (
         <>
+            <div className='absolute top-20 left-0'>
+                <BackButton backPath={'/'} />
+            </div>
             {projects.length === 0 ? (
                 <div className='w-screen h-screen flex flex-col justify-center items-center'>
                     <p className='text-4xl font-bold text-gray-600'>Oops, No projects available!</p>

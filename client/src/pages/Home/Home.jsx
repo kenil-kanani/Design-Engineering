@@ -1,5 +1,6 @@
 import React from 'react'
 import './Home.css'
+import { Link } from 'react-router-dom'
 
 
 const Home = () => {
@@ -10,7 +11,7 @@ const Home = () => {
                 <h1 className='text-[36px] mt-[60px] font-sans font-bold text-[#333333]' >Design Engineering Canvas & Report Builder</h1>
                 <h1 className='text-[28px] font-sans font-bold mt-[10px]'>Single Location for Lots of Problems😠</h1>
                 <h1 className='text-[18px] font-sans text-[#555555] mt-[10px]'>Transform your ideas💡 into actionable plans with our easy to use canvas & report builder.</h1>
-                <button className='py-[10px] px-[20px] mt-[30px] mb-[70px] text-white rounded-lg bg-[#1a1a1a] hover:bg-[#463d3d] cursor-pointer'>Get Started</button>
+                <Link to={'/myprojects'}><button className='py-[10px] px-[20px] mt-[30px] mb-[70px] text-white rounded-lg bg-[#1a1a1a] hover:bg-[#463d3d] cursor-pointer'>Get Started</button></Link>
             </div>
             <div className='w-screen flex flex-col bg-[#9db1bf]'>
                 <h2 className='font-sans font-bold text-[28px] pl-[40px] mt-[40px]'>About</h2>
@@ -33,7 +34,7 @@ const Home = () => {
                 <p className='font-sans text-[16px] pl-[40px] mb-[60px]'>Export your canvas as a PDF & JPG or share it with others to gather feedback.</p>
             </div>
             <div className='w-screen text-center text-[16px] bg-[#1a1a1a] text-white py-[15px]'>
-                © 2023 Design Engineering Canvas & Report Builder. All rights reserved.
+                © 2024 Design Engineering Canvas & Report Builder. All rights reserved.
             </div>
         </div>
     )

@@ -7,7 +7,7 @@ import { useMutation } from 'react-query';
 import { deleteProject } from '../../utils/projectApis';
 import { toast } from "react-toastify";
 
-function ProjectCard({ projectId, title, description, setProjects }) {
+function ProjectCard({ projectId, title, description, setProjects, mutation, setProjectId }) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -16,19 +16,6 @@ function ProjectCard({ projectId, title, description, setProjects }) {
         const encodedProjectId = encodeURIComponent(projectId);
         navigate(`/myprojects/${formattedTitle}?id=${encodedProjectId}`, { state: { title, formattedTitle } });
     };
-
-    const mutation = useMutation({
-        mutationKey: ['project-delete'],
-        mutationFn: () => deleteProject({ projectId }),
-        onSuccess: () => {
-            setProjects((prev) => prev.filter((project) => project._id !== projectId));
-            toast.success("Project Deleted Successfully")
-        },
-        onError: (error) => {
-            // console.log("Error : ", error.response.data.err.message)
-            toast.error(`Something went wrong: ${error.response.data.err.message}`)
-        }
-    })
 
     return (
         <div className="cardd" id={projectId} onClick={handleClick}>
@@ -43,6 +30,7 @@ function ProjectCard({ projectId, title, description, setProjects }) {
                 className='absolute bottom-0 right-0 text-3xl bg-white hover:bg-red-400 p-2 cursor-pointer rounded-tl-[50%]'
                 onClick={(e) => {
                     e.stopPropagation();
+                    setProjectId(projectId)
                     mutation.mutate();
                 }}
             >
