@@ -32,14 +32,14 @@ const LoginForm = () => {
             toast.success(response.message)
             localStorage.setItem('X-access-token', response.data)
             dispatch(setIsAuthenticated(true))
-            navigate('/')
+            navigate('/', { replace: true })
         } catch (error) {
             const { response } = error;
             toast.error(response.data?.message);
             setIsVisible(false)
             if (response.data.err.message == 'Not Verifyed Email') {
                 localStorage.setItem('X-access-token', response.data.err.explanation)
-                navigate('/verify');
+                navigate('/verify', { replace: true });
             }
         }
     };

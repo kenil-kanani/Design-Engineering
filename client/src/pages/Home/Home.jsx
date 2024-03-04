@@ -1,12 +1,14 @@
 import React from 'react'
 import './Home.css'
 import { Link } from 'react-router-dom'
+import PopUp from '../../components/PopUp/PopUp'
 
 
 const Home = () => {
 
     return (
         <div className='w-screen h-screen'>
+            <PopUp />
             <div className='w-screen flex flex-col items-center bg-[#dde6ed]'>
                 <h1 className='text-[36px] mt-[60px] font-sans font-bold text-[#333333]' >Design Engineering Canvas & Report Builder</h1>
                 <h1 className='text-[28px] font-sans font-bold mt-[10px]'>Single Location for Lots of Problems😠</h1>

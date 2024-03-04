@@ -55,7 +55,7 @@ const SignUpForm = () => {
             setIsVisible(false);
             toast.success(response.message);
             localStorage.setItem('X-access-token', response.data)
-            navigate('/verify');
+            navigate('/verify', { replace: true });
         } catch (error) {
             setIsVisible(false);
             let { response } = error;
