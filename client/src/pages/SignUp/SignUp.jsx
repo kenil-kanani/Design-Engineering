@@ -20,7 +20,6 @@ const SignUpForm = () => {
 
     //* loader is visible or not
     const [isVisible, setIsVisible] = useState(false);
-    // const isVisible = useSelector(state => state.authReducer.isLoading)
 
     //* email and password are empty or not
     const [isNameEmpty, setIsNameEmpty] = useState(false);
@@ -73,45 +72,53 @@ const SignUpForm = () => {
                 <div className="flex-column">
                     <label>Name </label></div>
                 <div className="inputForm">
-                    <input placeholder="Enter your Name" className="input" type="text" onChange={(event) => {
-                        setName(event.target.value);
-                        setIsNameEmpty(false);
-                    }} />
+                    <input
+                        placeholder="Enter your Name"
+                        disabled={isVisible}
+                        className={`input ${isVisible && 'cursor-not-allowed'}`}
+                        type="text"
+                        onChange={(event) => {
+                            setName(event.target.value);
+                            setIsNameEmpty(false);
+                        }} />
                 </div>
                 {isNameEmpty && <span className='text-red-500 text-xs flex justify-end'>*name is required</span>}
 
                 <div className="flex-column">
                     <label>Email </label></div>
                 <div className="inputForm">
-                    <input placeholder="Enter your Email" className="input" type="text" onChange={(event) => {
-                        setEmail(event.target.value);
-                        setIsEmailEmpty(false);
-                    }} />
+                    <input
+                        placeholder="Enter your Email"
+                        disabled={isVisible}
+                        className={`input ${isVisible && 'cursor-not-allowed'}`}
+                        type="text"
+                        onChange={(event) => {
+                            setEmail(event.target.value);
+                            setIsEmailEmpty(false);
+                        }} />
                 </div>
                 {isEmailEmpty && <span className='text-red-500 text-xs flex justify-end'>*email is required</span>}
 
                 <div className="flex-column">
                     <label>Password</label></div>
                 <div className="inputForm">
-                    <input placeholder="Enter your Password" className="input" type="password" onChange={(event) => {
-                        setPassword(event.target.value);
-                        setIsPasswordEmpty(false);
-                    }} />
+                    <input
+                        placeholder="Enter your Password"
+                        disabled={isVisible}
+                        className={`input ${isVisible && 'cursor-not-allowed'}`}
+                        type="password"
+                        onChange={(event) => {
+                            setPassword(event.target.value);
+                            setIsPasswordEmpty(false);
+                        }} />
                 </div>
                 {isPasswordEmpty && <span className='text-red-500 text-xs flex justify-end'>*password is required</span>}
 
-                <div className="flex-row">
-                    <div>
-                        <input type="checkbox" />
-                        <label className='ml-1'>Remember me</label>
-                    </div>
-                    <span className="span hidden">Forgot password?</span>
-                </div>
-                <button className="button-submit" onClick={(event) => {
+                <button className={`button-submit ${isVisible && 'cursor-not-allowed bg-gray-400'}`} disabled={isVisible} onClick={(event) => {
                     event.preventDefault();
                     handleLogin();
                 }}>Sign Up</button>
-                <p className="p">Already have an account? <span className="span"><Link to='/signin' >Sign In</Link></span></p>
+                <p className="p">Already have an account? {isVisible ? <span className={`span cursor-not-allowed`}>Sign In</span> : <span className={`span`}><Link to='/signin'>Sign In</Link></span>}</p>
             </form>
         </>
     )
